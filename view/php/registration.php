@@ -22,7 +22,7 @@ try {
 if (isset($_POST['submit'])) {
     try {
         $first_name = htmlspecialchars(trim($_POST['first_name']));
-        $middle_name = htmlspecialchars(trim($_POST['middle_name']));
+        // $middle_name = htmlspecialchars(trim($_POST['middle_name']));
         $last_name = htmlspecialchars(trim($_POST['last_name']));
         $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
         $mobile_no = trim($_POST['mobile_no']);
@@ -76,7 +76,7 @@ if (isset($_POST['submit'])) {
                 $insert = "INSERT INTO students (name, email, phone_no, enrollment_no, gr_number, semester_id, class_id, batch_id, password) 
                            VALUES (:name, :email, :phone_no, :enrollment_no, :gr_no, :semester_id, :class_id, :batch_id, :password)";
                 $stmt = $conn->prepare($insert);
-                $full_name = $first_name . " " . $middle_name . " " . $last_name;
+                $full_name = $first_name . " " . $last_name;
                 $stmt->bindParam(':name', $full_name);                
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':phone_no', $mobile_no);
@@ -132,10 +132,6 @@ if (isset($_POST['submit'])) {
                         <input type="text" name="first_name" placeholder="Enter Your First Name" required>
                     </div>
                     <div class="input-field">
-                        <label>Middle Name</label>
-                        <input type="text" name="middle_name" placeholder="Enter Your Middle Name" required>
-                    </div>
-                    <div class="input-field">
                         <label>Last Name</label>
                         <input type="text" name="last_name" placeholder="Enter Your Last Name" required>
                     </div>
@@ -181,6 +177,10 @@ if (isset($_POST['submit'])) {
                                 <option value="<?php echo $batch['batch_id']; ?>"><?php echo $batch['batch_name']; ?></option>
                             <?php } ?>
                         </select>
+                    </div>
+                    <div class="input-field">
+                        <label>Profile Picture</label>
+                        <input type="file" name="profile_pic" id="profile_pic" placeholder="Upload Your Profile Picture" required>
                     </div>
                     <div class="input-field">
                         <label>Password</label>
