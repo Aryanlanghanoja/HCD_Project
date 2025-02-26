@@ -1,11 +1,15 @@
+<?php
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<link rel="stylesheet" href="style.css">
-	<title>Dashboard</title>
+	<link rel="stylesheet" href="../css//Student_dashboard.css">
+	<title>Student Dashboard</title>
 </head>
 <body>
 	
@@ -212,6 +216,6 @@
 	<!-- NAVBAR -->
 
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-	<script src="script.js"></script>
+	<script src="../js/Student_dashboard.js"></script>
 </body>
 </html>

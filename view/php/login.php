@@ -6,14 +6,11 @@ session_start();
 // Redirect users away from login page if they are already logged in
 if (isset($_SESSION['id'])) {
     switch ($_SESSION['role']) {
-        case 'mentor':
-            header('Location: ../../../../../../Hackentine/View/10X Mentor/mentor.php');
+        case 'faculty':
+            header('Location: ../php/faculty_dashboard.php"');
             exit();
-        case 'coordinator':
-            header('Location: ../../../../../../../Hackentine/Modules/Club Coordinator/View/core.php');
-            exit();
-        case 'member':
-            header('Location: ../../../../../../../Hackentine/View/Student Dashboard/student.php');
+        case 'student':
+            header('Location: ../php/student_dashboard.php"');
             exit();
     }
 }
@@ -22,7 +19,7 @@ if (isset($_SESSION['id'])) {
 $error = [];
 
 // Include the database connection file
-@include '../../../Includes/db_connect.php';
+@include '../../config/db.config.php';
 
 if (isset($_POST['submit'])) {
     try {
@@ -66,14 +63,11 @@ if (isset($_POST['submit'])) {
                     $_SESSION['role'] = $row['role']; 
 
                     switch ($row['role']) {
-                        case 'mentor':
-                            header('Location: ../../../../../../Hackentine/View/10X Mentor/mentor.php');
+                        case 'faculty':
+                            header('Location: ../php/faculty_dashboard.php"');
                             break;
-                        case 'coordinator':
-                            header('Location: ../../../../../../../Hackentine/Modules/Club Coordinator/View/core.php');
-                            break;
-                        case 'member':
-                            header('Location: ../../../../../../../Hackentine/View/Student Dashboard/student.php');
+                        case 'student':
+                            header('Location: ../php/student_dashboard.php"');
                             break;
                         default:
                             $error[] = "Invalid user role.";
