@@ -15,7 +15,7 @@
 	
 	<!-- SIDEBAR -->
 	<section id="sidebar">
-		<a href="#" class="brand"><img src="../../assests/images/Logo_Black_Text-removebg_resized.png" alt="" srcset=""></a>
+		<a href="#" class="brand"><img src="../../assets/images/Logo_Black_Text-removebg_resized.png" alt="" srcset=""></a>
 		<ul class="side-menu">
 			<li><a href="#" class="active"><i class='bx bxs-dashboard icon' ></i> Dashboard</a></li>
 			<li class="divider" data-text="main">Main</li>
@@ -72,7 +72,7 @@
 			</a>
 			<span class="divider"></span>
 			<div class="profile">
-				<img src="../../assests/images/Admin.jpg" alt="">
+				<img src="../../assets/images/Admin.jpg" alt="">
 				<ul class="profile-link">
 					<li><a href="#"><i class='bx bxs-user-circle icon' ></i> Profile</a></li>
 					<li><a href="#"><i class='bx bxs-cog' ></i> Settings</a></li>
