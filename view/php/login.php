@@ -2,6 +2,8 @@
 session_start();
 include '../../config/db.config.php';
 
+$errors = []; // Initialize an empty array to store errors
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $enrollment_no = $_POST['enrollment_no'];
     $password = $_POST['password'];
@@ -16,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($student && password_verify($password, $student["password"])) {
             $_SESSION['user'] = $student["enrollment_no"];
             $_SESSION['role'] = "student";
-            header("Location: ../../student_dashboard.php");
+            header("Location: ./student_dashboard.php");
             exit();
         }
 
@@ -29,28 +31,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($admin && password_verify($password, $admin["password"])) {
             $_SESSION['user'] = $admin["admin_id"];
             $_SESSION['role'] = "admin";
-            header("Location: ../../faculty_dashboard.php");
+            header("Location: ./faculty_dashboard.php");
             exit();
         }
 
         // If login fails
-        $_SESSION['error'] = "Invalid enrollment number or password";
-        header("Location: ../../../../../HCD_Project/view/php/login.php");
-        exit();
+        $errors[] = "Invalid enrollment number or password";
     } catch (PDOException $e) {
-        die("Database error: " . $e->getMessage());
+        $errors[] = "Database error: " . $e->getMessage();
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- ===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
-    <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="../css/login.css" />
     <link rel="shortcut icon" href="../../assets/images/Fevicon.svg" type="image/x-icon">
     <title>Login</title>
@@ -60,16 +59,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="forms">
             <div class="form login">
                 <span class="title">Login</span>
+
                 <?php
-                if (!empty($error)) {
-                    foreach ($error as $err) {
-                        echo "<p style='color: red;'>$err</p>";
+                if (!empty($errors)) {
+                    echo "<div style='color: red; margin-bottom: 10px;'>";
+                    foreach ($errors as $error) {
+                        echo "<p>$error</p>";
                     }
+                    echo "</div>";
                 }
                 ?>
-                <form action="" method="post">
+
+                <form action="./login.php" method="post">
                     <div class="input-field">
-                        <input type="text" name="text" placeholder="Enter your Enrollment No" value="<?php echo htmlspecialchars($_POST['enrollment_no'] ?? ''); ?>" required />
+                        <input type="text" name="enrollment_no" placeholder="Enter your Enrollment No" 
+                               value="<?php echo htmlspecialchars($_POST['enrollment_no'] ?? ''); ?>" required />
                         <i class="uil uil-user"></i>
                     </div>
                     <div class="input-field">
@@ -90,14 +94,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </form>
                 <div class="login-signup">
                     <span class="text">
-                        Not a Registered?
-                        <a href="../php//registration.php" class="text signup-link">Register</a>
+                        Not Registered?
+                        <a href="../php/registration.php" class="text signup-link">Register</a>
                     </span>
                 </div>
             </div>
         </div>
     </div>
     <script src="../js/login.js"></script>
-    
 </body>
 </html>

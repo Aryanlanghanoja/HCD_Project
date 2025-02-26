@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -11,11 +12,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #333;
+    background: #02959F;
 }
 
 .container {
-    position: relative;
     max-width: 900px;
     width: 100%;
     border-radius: 6px;
@@ -26,10 +26,10 @@ body {
 }
 
 .container header {
-    position: relative;
     font-size: 20px;
     font-weight: 600;
     color: #333;
+    position: relative;
 }
 
 .container header::before {
@@ -40,48 +40,19 @@ body {
     height: 3px;
     width: 27px;
     border-radius: 8px;
-    background-color: #EC4904;
+    background-color: #d44c4c;
 }
 
 .container form {
-    position: relative;
     margin-top: 16px;
-    background-color: #fff;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: auto;
-}
-
-.container form .form {
-    position: absolute;
-    background-color: #fff;
-    transition: 0.3s ease;
-}
-
-.container form .form.second {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(100%);
-}
-
-form {
-    height: 500px !important;
-}
-
-form.secActive .form.first {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-100%);
 }
 
 .container form .title {
-    display: block;
     margin-bottom: 8px;
     font-size: 16px;
     font-weight: 500;
-    margin: 6px 0;
     color: #333;
 }
 
@@ -92,9 +63,9 @@ form.secActive .form.first {
     flex-wrap: wrap;
 }
 
-form .fields .input-field {
-    display: flex;
+.fields .input-field {
     width: calc(100% / 3 - 15px);
+    display: flex;
     flex-direction: column;
     margin: 4px 0;
 }
@@ -105,12 +76,9 @@ form .fields .input-field {
     color: #2e2e2e;
 }
 
-.input-field input,
-select {
+.input-field input, select {
     outline: none;
     font-size: 14px;
-    font-weight: 400;
-    color: #333;
     border-radius: 5px;
     border: 1px solid #aaa;
     padding: 0 15px;
@@ -118,30 +86,7 @@ select {
     margin: 8px 0;
 }
 
-select {
-    background-color: #fff;
-}
-
-.input-field input :focus,
-.input-field select:focus {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
-}
-
-.input-field select,
-.input-field input[type="date"] {
-    color: #707070;
-}
-
-.input-field input[type="date"]:valid {
-    color: #333;
-}
-
-.container form {
-    min-height: 550px;
-}
-
-.container form button,
-.backBtn {
+.container form button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -149,60 +94,23 @@ select {
     max-width: 200px;
     width: 100%;
     border: none;
-    outline: none;
     color: #fff;
     border-radius: 5px;
     margin: 25px 0;
-    background-color: #EC4904;
+    background-color: #d44c4c;
     transition: all 0.3s linear;
     cursor: pointer;
 }
 
-.container form .btnText {
-    font-size: 14px;
-    font-weight: 400;
-}
-
-form button:hover{
-    background-color: #EC4904;
-
-}
-
-form button i,
-form .backBtn i {
-    margin: 0 6px;
-}
-
-form .backBtn i {
-    transform: rotate(180deg);
-}
-
-form .buttons {
-    display: flex;
-    align-items: center;
-}
-
-form .buttons button,
-.backBtn {
-    margin-right: 14px;
-}
-
-.buttons {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.login-signup {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-}
-
 .login-signup a {
-    color: #EC4904;
+    color: #d44c4c;
     text-decoration: none;
+}
+
+/* Hover effect for Submit button */
+.container form button:hover {
+    background-color: #a83636;
+    transform: scale(1.05);
 }
 
 @media (max-width: 750px) {
@@ -212,13 +120,13 @@ form .buttons button,
     .container form::-webkit-scrollbar {
         display: none;
     }
-    form .fields .input-field {
+    .fields .input-field {
         width: calc(100% / 2 - 15px);
     }
 }
 
 @media (max-width: 550px) {
-    form .fields .input-field {
+    .fields .input-field {
         width: 100%;
     }
 }
