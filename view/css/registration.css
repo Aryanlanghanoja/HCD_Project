@@ -70,6 +70,14 @@ body {
     margin: 4px 0;
 }
 
+.input-field input[type="file"] {
+    padding: 10px;
+    height: auto;
+    cursor: pointer;
+}
+
+
+
 .input-field label {
     font-size: 12px;
     font-weight: 650;
