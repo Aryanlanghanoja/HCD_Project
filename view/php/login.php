@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
                 <form action="" method="post">
                     <div class="input-field">
                         <input type="text" name="text" placeholder="Enter your Enrollment No" value="<?php echo htmlspecialchars($_POST['enrollment_no'] ?? ''); ?>" required />
-                        <i class="uil uil-envelope icon"></i>
+                        <i class="uil uil-user"></i>
                     </div>
                     <div class="input-field">
                         <input type="password" name="password" class="password" placeholder="Enter your password" required />
