@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2025 at 10:57 AM
+-- Generation Time: Feb 26, 2025 at 11:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -102,7 +102,7 @@ CREATE TABLE `exams` (
 
 CREATE TABLE `exam_submissions` (
   `exam_submission_id` int(11) NOT NULL,
-  `student_id` int(11) DEFAULT NULL,
+  `enrollment_no` varchar(50) DEFAULT NULL,
   `exam_id` int(11) DEFAULT NULL,
   `language` varchar(50) NOT NULL,
   `filepath` text NOT NULL,
@@ -143,7 +143,9 @@ INSERT INTO `semesters` (`semester_id`, `semester_number`) VALUES
 (3, 3),
 (4, 4),
 (5, 5),
-(6, 6);
+(6, 6),
+(7, 7),
+(8, 8);
 
 -- --------------------------------------------------------
 
@@ -152,9 +154,8 @@ INSERT INTO `semesters` (`semester_id`, `semester_number`) VALUES
 --
 
 CREATE TABLE `students` (
-  `student_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
   `enrollment_no` varchar(50) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `gr_number` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -164,6 +165,13 @@ CREATE TABLE `students` (
   `batch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`enrollment_no`, `name`, `gr_number`, `email`, `password`, `phone_no`, `semester_id`, `class_id`, `batch_id`) VALUES
+('92310133007', 'Abhay Nathwani', '121182', 'abhay.nathwani121182@marwadiuniversity.ac.in', '123123', '9054987116', 6, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -172,7 +180,7 @@ CREATE TABLE `students` (
 
 CREATE TABLE `submissions` (
   `submission_id` int(11) NOT NULL,
-  `student_id` int(11) DEFAULT NULL,
+  `enrollment_no` varchar(50) DEFAULT NULL,
   `question_id` int(11) DEFAULT NULL,
   `language` varchar(50) NOT NULL,
   `filepath` text NOT NULL,
@@ -235,7 +243,7 @@ ALTER TABLE `exams`
 --
 ALTER TABLE `exam_submissions`
   ADD PRIMARY KEY (`exam_submission_id`),
-  ADD KEY `student_id` (`student_id`),
+  ADD KEY `enrollment_no` (`enrollment_no`),
   ADD KEY `exam_id` (`exam_id`);
 
 --
@@ -255,8 +263,7 @@ ALTER TABLE `semesters`
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
-  ADD PRIMARY KEY (`student_id`),
-  ADD UNIQUE KEY `enrollment_no` (`enrollment_no`),
+  ADD PRIMARY KEY (`enrollment_no`),
   ADD UNIQUE KEY `gr_number` (`gr_number`),
   ADD UNIQUE KEY `email` (`email`),
   ADD KEY `semester_id` (`semester_id`),
@@ -268,7 +275,7 @@ ALTER TABLE `students`
 --
 ALTER TABLE `submissions`
   ADD PRIMARY KEY (`submission_id`),
-  ADD KEY `student_id` (`student_id`),
+  ADD KEY `enrollment_no` (`enrollment_no`),
   ADD KEY `question_id` (`question_id`);
 
 --
@@ -322,13 +329,7 @@ ALTER TABLE `questions`
 -- AUTO_INCREMENT for table `semesters`
 --
 ALTER TABLE `semesters`
-  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `students`
---
-ALTER TABLE `students`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `submissions`
@@ -359,7 +360,7 @@ ALTER TABLE `exams`
 -- Constraints for table `exam_submissions`
 --
 ALTER TABLE `exam_submissions`
-  ADD CONSTRAINT `exam_submissions_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  ADD CONSTRAINT `exam_submissions_ibfk_1` FOREIGN KEY (`enrollment_no`) REFERENCES `students` (`enrollment_no`),
   ADD CONSTRAINT `exam_submissions_ibfk_2` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`);
 
 --
@@ -374,7 +375,7 @@ ALTER TABLE `students`
 -- Constraints for table `submissions`
 --
 ALTER TABLE `submissions`
-  ADD CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  ADD CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`enrollment_no`) REFERENCES `students` (`enrollment_no`),
   ADD CONSTRAINT `submissions_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`);
 
 --
