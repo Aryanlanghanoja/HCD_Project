@@ -22,18 +22,24 @@ try {
 if (isset($_POST['submit'])) {
     try {
         $first_name = htmlspecialchars(trim($_POST['first_name']));
+        $middle_name = htmlspecialchars(trim($_POST['middle_name']));
         $last_name = htmlspecialchars(trim($_POST['last_name']));
         $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
         $mobile_no = trim($_POST['mobile_no']);
-        $linkedin = filter_var(trim($_POST['linkedin']), FILTER_VALIDATE_URL);
-        $github = filter_var(trim($_POST['github']), FILTER_VALIDATE_URL);
+        $enrollment_no = trim($_POST['enrollment_no']);
+        $gr_no = trim($_POST['gr_no']);
+        $semester_id = intval($_POST['semester_id']);
+        $class_id = intval($_POST['class_id']);
+        $batch_id = intval($_POST['batch_id']);
         $password = $_POST['password'];
-        $cpassword = $_POST['cpassword'];
-        $university_id = intval($_POST['university_id']);
+        $cpassword = $_POST['confirm_password'];
         $role = 'member';
 
         if (!preg_match("/^[a-zA-Z]+$/", $first_name)) {
             $error[] = 'First name should contain only letters.';
+        }
+        if (!preg_match("/^[a-zA-Z]+$/", $middle_name)) {
+            $error[] = 'Middle name should contain only letters.';
         }
         if (!preg_match("/^[a-zA-Z]+$/", $last_name)) {
             $error[] = 'Last name should contain only letters.';
@@ -44,11 +50,11 @@ if (isset($_POST['submit'])) {
         if (!preg_match("/^[0-9]{10}$/", $mobile_no)) {
             $error[] = 'Mobile number must be exactly 10 digits.';
         }
-        if (!$linkedin) {
-            $error[] = 'Invalid LinkedIn URL.';
+        if (strlen($enrollment_no) < 5) {
+            $error[] = 'Enrollment number is too short.';
         }
-        if (!$github) {
-            $error[] = 'Invalid Github URL.';
+        if (strlen($gr_no) < 5) {
+            $error[] = 'GR number is too short.';
         }
         if (strlen($password) < 6) {
             $error[] = 'Password must be at least 6 characters long.';
@@ -59,7 +65,7 @@ if (isset($_POST['submit'])) {
 
         if (empty($error)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $check_email = "SELECT email FROM users WHERE email = :email";
+            $check_email = "SELECT email FROM students WHERE email = :email";
             $stmt = $conn->prepare($check_email);
             $stmt->bindParam(':email', $email);
             $stmt->execute();
@@ -67,21 +73,22 @@ if (isset($_POST['submit'])) {
             if ($stmt->rowCount() > 0) {
                 $error[] = 'Email already exists!';
             } else {
-                $insert = "INSERT INTO users (first_name, last_name, mobile_no, email, linkedin, github, password, university_id, role) 
-                           VALUES (:first_name, :last_name, :mobile_no, :email, :linkedin, :github, :password, :university_id, :role)";
+                $insert = "INSERT INTO students (name, email, phone_no, enrollment_no, gr_number, semester_id, class_id, batch_id, password) 
+                           VALUES (:name, :email, :phone_no, :enrollment_no, :gr_no, :semester_id, :class_id, :batch_id, :password)";
                 $stmt = $conn->prepare($insert);
-                $stmt->bindParam(':first_name', $first_name);
-                $stmt->bindParam(':last_name', $last_name);
-                $stmt->bindParam(':mobile_no', $mobile_no);
+                $full_name = $first_name . " " . $middle_name . " " . $last_name;
+                $stmt->bindParam(':name', $full_name);                
                 $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':linkedin', $linkedin);
-                $stmt->bindParam(':github', $github);
+                $stmt->bindParam(':phone_no', $mobile_no);
+                $stmt->bindParam(':enrollment_no', $enrollment_no);
+                $stmt->bindParam(':gr_no', $gr_no);
+                $stmt->bindParam(':semester_id', $semester_id);
+                $stmt->bindParam(':class_id', $class_id);
+                $stmt->bindParam(':batch_id', $batch_id);
                 $stmt->bindParam(':password', $hashed_password);
-                $stmt->bindParam(':university_id', $university_id);
-                $stmt->bindParam(':role', $role);
 
                 if ($stmt->execute()) {
-                    header('Location: ../Login/login.php');
+                    header('Location: ./login.php');
                     exit();
                 } else {
                     $error[] = 'Registration failed! Please try again.';
@@ -93,6 +100,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -191,7 +199,7 @@ if (isset($_POST['submit'])) {
                     <div class="login-signup">
                         <span class="text">
                             Already a member?
-                            <a href="../Login/login.php" class="text signup-link">Login Now</a>
+                            <a href="./login.php" class="text signup-link">Login Now</a>
                         </span>
                     </div>
                 </div>
