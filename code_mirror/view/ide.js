@@ -31,14 +31,14 @@ function changeLanguage() {
 
 function executeCode() {
     $.ajax({
-        url: "http://localhost/HCD_Project/services/compiler.php",
+        url: "http://localhost/HCD_Project/code_mirror/services/compiler.php",
         method: "POST",
         data: {
             language: $("#languages").val(),
             code: editor.getValue()
         },
         success: function(response) {
-            $("#output").html(response.replace(/\n/g, "<br>"));
+            $("#output").html(response.replace(/\n/g, "<br>")); // Preserve new lines
         }
     });
 }
