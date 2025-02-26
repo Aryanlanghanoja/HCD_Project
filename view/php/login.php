@@ -22,7 +22,7 @@ if (isset($_SESSION['id'])) {
 $error = [];
 
 // Include the database connection file
-@include '../../../Includes/db_connect.php';
+@include '../../config/db.config.php';
 
 if (isset($_POST['submit'])) {
     try {
