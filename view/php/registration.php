@@ -2,13 +2,19 @@
 session_start();
 $error = [];
 
-@include '../../../Includes/db_connect.php';
+@include '../../config/db.config.php';
 
-// Fetch universities from the database
-$universities = [];
+$semesters = [];
+$classes = [];
+$batches = [];
+
 try {
-    $stmt = $conn->query("SELECT id, name FROM universities");
-    $universities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->query("SELECT semester_id, semester_number FROM semesters");
+    $semesters = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->query("SELECT class_id, class_name FROM classes");
+    $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->query("SELECT batch_id, batch_name FROM batches");
+    $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $error[] = 'Database error: ' . $e->getMessage();
 }
@@ -26,7 +32,6 @@ if (isset($_POST['submit'])) {
         $university_id = intval($_POST['university_id']);
         $role = 'member';
 
-        // Validations
         if (!preg_match("/^[a-zA-Z]+$/", $first_name)) {
             $error[] = 'First name should contain only letters.';
         }
@@ -96,9 +101,10 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/registration.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <title>Registration Form</title>
+    <link rel="shortcut icon" href="../../assets/images/Fevicon.svg" type="image/x-icon">
+    <title>Registration</title>
 </head>
 <body>
     <div class="container">
@@ -118,6 +124,10 @@ if (isset($_POST['submit'])) {
                         <input type="text" name="first_name" placeholder="Enter Your First Name" required>
                     </div>
                     <div class="input-field">
+                        <label>Middle Name</label>
+                        <input type="text" name="middle_name" placeholder="Enter Your Middle Name" required>
+                    </div>
+                    <div class="input-field">
                         <label>Last Name</label>
                         <input type="text" name="last_name" placeholder="Enter Your Last Name" required>
                     </div>
@@ -130,12 +140,39 @@ if (isset($_POST['submit'])) {
                         <input type="tel" name="mobile_no" placeholder="Enter Mobile Number" required>
                     </div>
                     <div class="input-field">
-                        <label>LinkedIn Profile</label>
-                        <input type="url" name="linkedin" placeholder="Enter LinkedIn Profile Link" required>
+                        <label>Enrollment No</label>
+                        <input type="tel" name="enrollment_no" placeholder="Enter Enrollement No" required>
                     </div>
                     <div class="input-field">
-                        <label>Github Profile</label>
-                        <input type="url" name="github" placeholder="Enter Github Profile Link" required>
+                        <label>GR No</label>
+                        <input type="tel" name="gr_no" placeholder="Enter GR No" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Semester</label>
+                        <select name="semester_id" required>
+                            <option disabled selected>Select Semester</option>
+                            <?php foreach ($semesters as $semester) { ?>
+                                <option value="<?php echo $semester['semester_id']; ?>"><?php echo $semester['semester_number']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label>Class</label>
+                        <select name="class_id" required>
+                            <option disabled selected>Select Class</option>
+                            <?php foreach ($classes as $class) { ?>
+                                <option value="<?php echo $class['class_id']; ?>"><?php echo $class['class_name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label>Batch</label>
+                        <select name="batch_id" required>
+                            <option disabled selected>Select Batch</option>
+                            <?php foreach ($batches as $batch) { ?>
+                                <option value="<?php echo $batch['batch_id']; ?>"><?php echo $batch['batch_name']; ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                     <div class="input-field">
                         <label>Password</label>
@@ -143,16 +180,7 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="input-field">
                         <label>Confirm Password</label>
-                        <input type="password" name="cpassword" placeholder="Confirm Your Password" required>
-                    </div>
-                    <div class="input-field">
-                        <label>University</label>
-                        <select name="university_id" required>
-                            <option disabled selected>Select University</option>
-                            <?php foreach ($universities as $university) { ?>
-                                <option value="<?php echo $university['id']; ?>"><?php echo $university['name']; ?></option>
-                            <?php } ?>
-                        </select>
+                        <input type="password" name="confirm_password" placeholder="Confirm Your Password" required>
                     </div>
                 </div>
                 <div class="buttons-container">
@@ -170,6 +198,6 @@ if (isset($_POST['submit'])) {
             </div>
         </form>
     </div>
-    <script src="script.js"></script>
+    <script src="../js/registration.js"></script>
 </body>
 </html>
