@@ -1,92 +1,47 @@
 <?php
 session_start();
+include '../../config/db.config.php';
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $enrollment_no = $_POST['enrollment_no'];
+    $password = $_POST['password'];
 
-
-// Redirect users away from login page if they are already logged in
-if (isset($_SESSION['id'])) {
-    switch ($_SESSION['role']) {
-        case 'faculty':
-            header('Location: ../php/faculty_dashboard.php"');
-            exit();
-        case 'student':
-            header('Location: ../php/student_dashboard.php"');
-            exit();
-    }
-}
-
-
-$error = [];
-
-// Include the database connection file
-@include '../../config/db.config.php';
-
-if (isset($_POST['submit'])) {
     try {
-        // Sanitize inputs
-        $enrollment_no = trim($_POST['enrollment_no']);
-        $password = trim($_POST['password']);
+        // Check Students Table
+        $stmt = $conn->prepare("SELECT enrollment_no, name, password FROM Students WHERE enrollment_no = :enrollment_no");
+        $stmt->bindParam(':enrollment_no', $enrollment_no, PDO::PARAM_STR);
+        $stmt->execute();
+        $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Input Validations
-        if (empty($enrollment_no)) {
-            $error[] = "Email is required.";
-        } elseif (!filter_var($enrollment_no, FILTER_VALIDATE_EMAIL)) {
-            $error[] = "Invalid email format.";
+        if ($student && password_verify($password, $student["password"])) {
+            $_SESSION['user'] = $student["enrollment_no"];
+            $_SESSION['role'] = "student";
+            header("Location: ../../student_dashboard.php");
+            exit();
         }
 
-        if (empty($password)) {
-            $error[] = "Password is required.";
-        } elseif (strlen($password) < 6) {
-            $error[] = "Password must be at least 6 characters long.";
+        // Check Admins Table
+        $stmt = $conn->prepare("SELECT admin_id, name, password FROM Admins WHERE emp_id = :enrollment_no");
+        $stmt->bindParam(':enrollment_no', $enrollment_no, PDO::PARAM_STR);
+        $stmt->execute();
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($admin && password_verify($password, $admin["password"])) {
+            $_SESSION['user'] = $admin["admin_id"];
+            $_SESSION['role'] = "admin";
+            header("Location: ../../faculty_dashboard.php");
+            exit();
         }
 
-        // Proceed only if there are no errors
-        if (empty($error)) {
-            // Prepare the SQL query to fetch user data
-            $select = "SELECT * FROM students WHERE enrollment_no = :email";
-            $stmt = $conn->prepare($select);
-            $stmt->bindParam(':email', $enrollment_no, PDO::PARAM_STR);
-            $stmt->execute();
-
-            if ($stmt->rowCount() > 0) {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // Verify the password
-                if (password_verify($password, $row['password'])) {
-                    $_SESSION['first_name'] = $row['first_name'];
-                    $_SESSION['last_name'] = $row['last_name'];
-                    $_SESSION['enrollment_no'] = $row['enrollment_no'];
-                    $_SESSION['university_id'] = $row['university_id'];     
-                    $_SESSION['email'] = $row['email'];    
-                    
-                    // Set session variables based on user type
-                    $_SESSION['role'] = $row['role']; 
-
-                    switch ($row['role']) {
-                        case 'faculty':
-                            header('Location: ../php/faculty_dashboard.php"');
-                            break;
-                        case 'student':
-                            header('Location: ../php/student_dashboard.php"');
-                            break;
-                        default:
-                            $error[] = "Invalid user role.";
-                    }
-                    exit();
-                } else {
-                    $error[] = 'Incorrect enrollment no or password!';
-                }
-            } else {
-                $error[] = 'Incorrect enrollment no or password!';
-            }
-        }
-
+        // If login fails
+        $_SESSION['error'] = "Invalid enrollment number or password";
+        header("Location: ../../../../../HCD_Project/view/php/login.php");
+        exit();
     } catch (PDOException $e) {
-        $error[] = 'Database error: ' . $e->getMessage();
+        die("Database error: " . $e->getMessage());
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,20 +56,6 @@ if (isset($_POST['submit'])) {
     <title>Login</title>
 </head>
 <body>
-<script>
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-    
-    // Prevent users from navigating back
-    window.onload = function () {
-        history.pushState(null, null, document.URL);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, document.URL);
-        });
-    };
-    
-</script>
     <div class="container">
         <div class="forms">
             <div class="form login">
@@ -150,7 +91,7 @@ if (isset($_POST['submit'])) {
                 <div class="login-signup">
                     <span class="text">
                         Not a Registered?
-                        <a href="../Register/registration.php" class="text signup-link">Register</a>
+                        <a href="../php//registration.php" class="text signup-link">Register</a>
                     </span>
                 </div>
             </div>
