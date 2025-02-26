@@ -24,13 +24,13 @@ $error = [];
 if (isset($_POST['submit'])) {
     try {
         // Sanitize inputs
-        $email = trim($_POST['email']);
+        $enrollment_no = trim($_POST['enrollment_no']);
         $password = trim($_POST['password']);
 
         // Input Validations
-        if (empty($email)) {
+        if (empty($enrollment_no)) {
             $error[] = "Email is required.";
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        } elseif (!filter_var($enrollment_no, FILTER_VALIDATE_EMAIL)) {
             $error[] = "Invalid email format.";
         }
 
@@ -43,9 +43,9 @@ if (isset($_POST['submit'])) {
         // Proceed only if there are no errors
         if (empty($error)) {
             // Prepare the SQL query to fetch user data
-            $select = "SELECT * FROM users WHERE email = :email";
+            $select = "SELECT * FROM students WHERE enrollment_no = :email";
             $stmt = $conn->prepare($select);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $enrollment_no, PDO::PARAM_STR);
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
                 if (password_verify($password, $row['password'])) {
                     $_SESSION['first_name'] = $row['first_name'];
                     $_SESSION['last_name'] = $row['last_name'];
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['enrollment_no'] = $row['enrollment_no'];
                     $_SESSION['university_id'] = $row['university_id'];     
                     $_SESSION['email'] = $row['email'];    
                     
@@ -74,12 +74,13 @@ if (isset($_POST['submit'])) {
                     }
                     exit();
                 } else {
-                    $error[] = 'Incorrect email or password!';
+                    $error[] = 'Incorrect enrollment no or password!';
                 }
             } else {
-                $error[] = 'Incorrect email or password!';
+                $error[] = 'Incorrect enrollment no or password!';
             }
         }
+
     } catch (PDOException $e) {
         $error[] = 'Database error: ' . $e->getMessage();
     }
@@ -112,6 +113,7 @@ if (isset($_POST['submit'])) {
             history.pushState(null, null, document.URL);
         });
     };
+    
 </script>
     <div class="container">
         <div class="forms">
@@ -126,7 +128,7 @@ if (isset($_POST['submit'])) {
                 ?>
                 <form action="" method="post">
                     <div class="input-field">
-                        <input type="text" name="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required />
+                        <input type="text" name="text" placeholder="Enter your Enrollment No" value="<?php echo htmlspecialchars($_POST['enrollment_no'] ?? ''); ?>" required />
                         <i class="uil uil-envelope icon"></i>
                     </div>
                     <div class="input-field">
