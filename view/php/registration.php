@@ -1,8 +1,20 @@
 <?php
+
+
 session_start();
 $error = [];
 
 @include '../../config/db.config.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../../vendor/autoload.php';
+
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
+
 
 $semesters = [];
 $classes = [];
@@ -86,11 +98,53 @@ if (isset($_POST['submit'])) {
                 $stmt->bindParam(':password', $hashed_password);
 
                 if ($stmt->execute()) {
-                    header('Location: ./login.php');
+                    // Generate a verification token
+                    $verification_token = bin2hex(random_bytes(32));
+                
+                    // Store the token in the database
+                    $updateToken = "UPDATE students SET verification_token = :token WHERE email = :email";
+                    $stmt = $conn->prepare($updateToken);
+                    $stmt->bindParam(':token', $verification_token);
+                    $stmt->bindParam(':email', $email);
+                    $stmt->execute();
+                
+                    
+                
+                    $mail = new PHPMailer(true);
+
+                        try {
+                            // Server settings
+                            $mail->isSMTP();
+                            $mail->Host = $_ENV['MAIL_HOST']; // Change based on your email provider
+                            $mail->SMTPAuth = true;
+                            $mail->Username = $_ENV['MAIL_USERNAME']; // Change based on your email provider 
+                            $mail->Password = $_ENV['MAIL_PASSWORD']; // Change based on your email provider 
+                            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                            $mail->Port = $_ENV['MAIL_PORT']; // Change based on your email provider
+
+                            // Recipients
+                            $mail->setFrom($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
+                            $mail->addAddress($email, $full_name);
+
+                            // Email content
+                            $mail->isHTML(true);
+                            $mail->Subject = "Verify Your Email";
+                            $mail->Body = "<p>Click the link below to verify your email:</p>
+                                        <p><a href='http://localhost/hcd_project/verify_email.php?token=$verification_token'>Verify Email</a></p>";
+
+                            $mail->send();
+                            echo "A verification email has been sent to your email address. Please verify your email before logging in.";
+                        } catch (Exception $e) {
+                            echo "Email could not be sent. Error: {$mail->ErrorInfo}";
+                        }
+
+                
+                    echo "A verification email has been sent to your email address. Please verify your email before logging in.";
                     exit();
                 } else {
                     $error[] = 'Registration failed! Please try again.';
                 }
+                
             }
         }
     } catch (PDOException $e) {
