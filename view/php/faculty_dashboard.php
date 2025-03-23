@@ -34,7 +34,7 @@
 			
 			<li class="divider" data-text="main">Main</li>
 
-			<li><a href="#"><i class='bx bx-code-alt icon'></i> Compiler</a></li>
+			<li><a href="../html/compiler.html"><i class='bx bx-code-alt icon'></i> Compiler</a></li>
 
 			<li>
 				<a href="#"><i class='bx bx-question-mark icon'></i> Questions <i class='bx bx-chevron-right icon-right'></i></a>
