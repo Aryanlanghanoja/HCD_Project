@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2025 at 04:18 AM
+-- Generation Time: Mar 23, 2025 at 09:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,13 @@ CREATE TABLE `admins` (
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`admin_id`, `name`, `emp_id`, `password`, `phone_no`, `email`) VALUES
+(1, 'Chandrasinh Parmar', '603', '$2y$10$zN.WCkalTDCT9GS0tGarCOs.lpdOG3rVdi.XVp38fnXujbkSUTIra', '1234567890', '123@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +54,15 @@ CREATE TABLE `batches` (
   `batch_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `batches`
+--
+
+INSERT INTO `batches` (`batch_id`, `batch_name`) VALUES
+(1, 'A'),
+(2, 'B'),
+(3, 'C');
+
 -- --------------------------------------------------------
 
 --
@@ -57,6 +73,16 @@ CREATE TABLE `classes` (
   `class_id` int(11) NOT NULL,
   `class_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `classes`
+--
+
+INSERT INTO `classes` (`class_id`, `class_name`) VALUES
+(1, 'EK1'),
+(2, 'EK2'),
+(3, 'TK1'),
+(4, 'TK2');
 
 -- --------------------------------------------------------
 
@@ -128,6 +154,20 @@ CREATE TABLE `semesters` (
   `semester_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `semesters`
+--
+
+INSERT INTO `semesters` (`semester_id`, `semester_number`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8);
+
 -- --------------------------------------------------------
 
 --
@@ -143,8 +183,17 @@ CREATE TABLE `students` (
   `phone_no` varchar(20) DEFAULT NULL,
   `semester_id` int(11) DEFAULT NULL,
   `class_id` int(11) DEFAULT NULL,
-  `batch_id` int(11) DEFAULT NULL
+  `batch_id` int(11) DEFAULT NULL,
+  `email_verified` tinyint(1) DEFAULT 0,
+  `verification_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`enrollment_no`, `name`, `gr_number`, `email`, `password`, `phone_no`, `semester_id`, `class_id`, `batch_id`, `email_verified`, `verification_token`) VALUES
+('92310133007', 'Abhay Nathwani', '121182', 'abhay.nathwani121182@marwadiuniversity.ac.in', '$2y$10$zaCl44t0ALNPM6VnEYNYA.rS1/k7ukMiVd4n/ikAzff0aN5m/yaJ2', '9054987116', 6, 3, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -279,19 +328,19 @@ ALTER TABLE `testcases`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `batches`
 --
 ALTER TABLE `batches`
-  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `exams`
@@ -315,7 +364,7 @@ ALTER TABLE `questions`
 -- AUTO_INCREMENT for table `semesters`
 --
 ALTER TABLE `semesters`
-  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `submissions`
