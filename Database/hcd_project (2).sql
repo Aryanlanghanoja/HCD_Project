@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2025 at 11:53 AM
+-- Generation Time: Mar 23, 2025 at 04:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,15 +47,6 @@ CREATE TABLE `batches` (
   `batch_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `batches`
---
-
-INSERT INTO `batches` (`batch_id`, `batch_name`) VALUES
-(1, 'A'),
-(2, 'B'),
-(3, 'C');
-
 -- --------------------------------------------------------
 
 --
@@ -66,16 +57,6 @@ CREATE TABLE `classes` (
   `class_id` int(11) NOT NULL,
   `class_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `classes`
---
-
-INSERT INTO `classes` (`class_id`, `class_name`) VALUES
-(1, 'EK1'),
-(2, 'EK2'),
-(3, 'TK1'),
-(4, 'TK2');
 
 -- --------------------------------------------------------
 
@@ -91,7 +72,19 @@ CREATE TABLE `exams` (
   `class_id` int(11) DEFAULT NULL,
   `semester_id` int(11) DEFAULT NULL,
   `invigilator_id` int(11) DEFAULT NULL,
-  `exam_date` date NOT NULL
+  `exam_date` date NOT NULL,
+  `duration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exam_questions`
+--
+
+CREATE TABLE `exam_questions` (
+  `exam_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -107,7 +100,9 @@ CREATE TABLE `exam_submissions` (
   `language` varchar(50) NOT NULL,
   `filepath` text NOT NULL,
   `status` enum('Pending','Accepted','Rejected') NOT NULL,
-  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `score` float DEFAULT 0,
+  `compiler_output` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -133,20 +128,6 @@ CREATE TABLE `semesters` (
   `semester_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `semesters`
---
-
-INSERT INTO `semesters` (`semester_id`, `semester_number`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8);
-
 -- --------------------------------------------------------
 
 --
@@ -165,13 +146,6 @@ CREATE TABLE `students` (
   `batch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `students`
---
-
-INSERT INTO `students` (`enrollment_no`, `name`, `gr_number`, `email`, `password`, `phone_no`, `semester_id`, `class_id`, `batch_id`) VALUES
-('92310133007', 'Abhay Nathwani', '121182', 'abhay.nathwani121182@marwadiuniversity.ac.in', '123123', '9054987116', 6, 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -185,7 +159,9 @@ CREATE TABLE `submissions` (
   `language` varchar(50) NOT NULL,
   `filepath` text NOT NULL,
   `status` enum('Pending','Accepted','Rejected') NOT NULL,
-  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `score` float DEFAULT 0,
+  `compiler_output` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -236,21 +212,30 @@ ALTER TABLE `exams`
   ADD KEY `batch_id` (`batch_id`),
   ADD KEY `class_id` (`class_id`),
   ADD KEY `semester_id` (`semester_id`),
-  ADD KEY `invigilator_id` (`invigilator_id`);
+  ADD KEY `invigilator_id` (`invigilator_id`),
+  ADD KEY `idx_exam_id` (`exam_id`);
+
+--
+-- Indexes for table `exam_questions`
+--
+ALTER TABLE `exam_questions`
+  ADD PRIMARY KEY (`exam_id`,`question_id`),
+  ADD KEY `question_id` (`question_id`);
 
 --
 -- Indexes for table `exam_submissions`
 --
 ALTER TABLE `exam_submissions`
   ADD PRIMARY KEY (`exam_submission_id`),
-  ADD KEY `enrollment_no` (`enrollment_no`),
-  ADD KEY `exam_id` (`exam_id`);
+  ADD KEY `exam_id` (`exam_id`),
+  ADD KEY `idx_exam_submissions_enrollment_no` (`enrollment_no`);
 
 --
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
-  ADD PRIMARY KEY (`question_id`);
+  ADD PRIMARY KEY (`question_id`),
+  ADD KEY `idx_question_id` (`question_id`);
 
 --
 -- Indexes for table `semesters`
@@ -268,15 +253,16 @@ ALTER TABLE `students`
   ADD UNIQUE KEY `email` (`email`),
   ADD KEY `semester_id` (`semester_id`),
   ADD KEY `class_id` (`class_id`),
-  ADD KEY `batch_id` (`batch_id`);
+  ADD KEY `batch_id` (`batch_id`),
+  ADD KEY `idx_enrollment_no` (`enrollment_no`);
 
 --
 -- Indexes for table `submissions`
 --
 ALTER TABLE `submissions`
   ADD PRIMARY KEY (`submission_id`),
-  ADD KEY `enrollment_no` (`enrollment_no`),
-  ADD KEY `question_id` (`question_id`);
+  ADD KEY `question_id` (`question_id`),
+  ADD KEY `idx_submissions_enrollment_no` (`enrollment_no`);
 
 --
 -- Indexes for table `testcases`
@@ -299,13 +285,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `batches`
 --
 ALTER TABLE `batches`
-  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `exams`
@@ -329,7 +315,7 @@ ALTER TABLE `questions`
 -- AUTO_INCREMENT for table `semesters`
 --
 ALTER TABLE `semesters`
-  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `semester_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `submissions`
@@ -355,6 +341,13 @@ ALTER TABLE `exams`
   ADD CONSTRAINT `exams_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `classes` (`class_id`),
   ADD CONSTRAINT `exams_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`semester_id`),
   ADD CONSTRAINT `exams_ibfk_4` FOREIGN KEY (`invigilator_id`) REFERENCES `admins` (`admin_id`);
+
+--
+-- Constraints for table `exam_questions`
+--
+ALTER TABLE `exam_questions`
+  ADD CONSTRAINT `exam_questions_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
+  ADD CONSTRAINT `exam_questions_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`);
 
 --
 -- Constraints for table `exam_submissions`
