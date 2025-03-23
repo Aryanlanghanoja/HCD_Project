@@ -2,6 +2,14 @@
 session_start();
 include '../../config/db.config.php';
 
+if(isset($_SESSION["user"])&& $_SESSION["role"]=="student"){
+    header("Location: ./student_dashboard.php");
+    exit();
+}
+else if(isset($_SESSION["user"])&& $_SESSION["role"]=="admin"){
+    header("Location: ./faculty_dashboard.php");
+    exit();
+}
 $errors = []; // Initialize an empty array to store errors
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

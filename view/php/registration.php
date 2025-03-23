@@ -38,9 +38,7 @@ if (isset($_POST['submit'])) {
         if (!preg_match("/^[a-zA-Z]+$/", $first_name)) {
             $error[] = 'First name should contain only letters.';
         }
-        if (!preg_match("/^[a-zA-Z]+$/", $middle_name)) {
-            $error[] = 'Middle name should contain only letters.';
-        }
+        
         if (!preg_match("/^[a-zA-Z]+$/", $last_name)) {
             $error[] = 'Last name should contain only letters.';
         }
@@ -178,10 +176,10 @@ if (isset($_POST['submit'])) {
                             <?php } ?>
                         </select>
                     </div>
-                    <div class="input-field">
+                    <!-- <div class="input-field">
                         <label>Profile Picture</label>
                         <input type="file" name="profile_pic" id="profile_pic" placeholder="Upload Your Profile Picture" required>
-                    </div>
+                    </div> -->
                     <div class="input-field">
                         <label>Password</label>
                         <input type="password" name="password" placeholder="Enter Your Password" required>
