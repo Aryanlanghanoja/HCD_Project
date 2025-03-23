@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Check Students Table
-        $stmt = $conn->prepare("SELECT enrollment_no, name, password, email_verified FROM Students WHERE enrollment_no = :enrollment_no");
+        $stmt = $conn->prepare("SELECT * FROM Students WHERE enrollment_no = :enrollment_no");
         $stmt->bindParam(':enrollment_no', $enrollment_no, PDO::PARAM_STR);
         $stmt->execute();
         $student = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,8 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } elseif ($student["email_verified"] != 1) {
                 $errors[] = "Please verify your email before logging in.";
             } else {
+                // Set session variables for student
                 $_SESSION['user'] = $student["enrollment_no"];
                 $_SESSION['role'] = "student";
+                $_SESSION['name'] = $student["name"];
+                $_SESSION['gr_number'] = $student["gr_number"];
+                $_SESSION['email'] = $student["email"];
+                $_SESSION['semester_id'] = $student["semester_id"];
+                $_SESSION['class_id'] = $student["class_id"];
+                $_SESSION['batch_id'] = $student["batch_id"];
+
                 header("Location: ./student_dashboard.php");
                 exit();
             }
@@ -62,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
