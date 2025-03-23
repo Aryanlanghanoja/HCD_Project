@@ -230,10 +230,10 @@ if (isset($_POST['submit'])) {
                             <?php } ?>
                         </select>
                     </div>
-                    <!-- <div class="input-field">
-                        <label>Profile Picture</label>
-                        <input type="file" name="profile_pic" id="profile_pic" placeholder="Upload Your Profile Picture" required>
-                    </div> -->
+                    <div class="input-field">
+                        <label>Profile Photo</label>
+                        <input type="file" name="profile_photo" id="profile_pic" placeholder="Upload Your Profile Photo" required>
+                    </div>
                     <div class="input-field">
                         <label>Password</label>
                         <input type="password" name="password" placeholder="Enter Your Password" required>
@@ -242,6 +242,7 @@ if (isset($_POST['submit'])) {
                         <label>Confirm Password</label>
                         <input type="password" name="confirm_password" placeholder="Confirm Your Password" required>
                     </div>
+                    <small style="color: red; display: block; margin-top: 1px;">Size should be less than 200 KB and <br>format must be JPG, JPEG, or PNG.</small>
                 </div>
                 <div class="buttons-container">
                     <button type="submit" name="submit" class="submit">
