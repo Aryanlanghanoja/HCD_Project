@@ -31,7 +31,7 @@ function changeLanguage() {
 
 function executeCode() {
     $.ajax({
-        url: "http://localhost/HCD_Project/services/compiler.php",
+        url: "http://10.80.2.166/PHP_Projects/HCD_Project/services/compiler.php",
         method: "POST",
         data: {
             language: $("#languages").val(),
@@ -42,4 +42,3 @@ function executeCode() {
         }
     });
 }
-

@@ -44,7 +44,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
     }
 
     if ($language == "cpp") {
-        $outputExe = "../Submissions/" . $random . ".exe";
+        $outputExe = "../submissions/" . $random . ".exe";
         $compileOutput = shell_exec("g++ $filePath -o $outputExe 2>&1");
         if (!$compileOutput) {
             $output = shell_exec(__DIR__ . "/$outputExe 2>&1");
