@@ -318,16 +318,20 @@ main {
     flex: 1;
     overflow: hidden;
     position: relative;
+    font-family: 'Fira Code' !important;
+    font-size: 14px !important;
 }
 
 .CodeMirror {
-    height: 100%;
-    font-family: 'Fira Code', monospace;
+    width: 100% !important;
+    height: 100% !important;
+    font-family: 'Fira Code' !important;
     font-size: 14px;
+    line-height: 1.5;
 }
 
-textarea {
-    font-family: 'Fira Code', monospace;
+.editor-container textarea {
+    font-family: 'Fira Code' !important;
     font-size: 14px;
 }
 
