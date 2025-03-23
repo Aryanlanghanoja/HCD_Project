@@ -2,13 +2,16 @@
 session_start();
 include '../../config/db.config.php';
 
-if (isset($_SESSION["user"]) && $_SESSION["role"] == "student") {
-    header("Location: ./student_dashboard.php");
-    exit();
-} else if (isset($_SESSION["user"]) && $_SESSION["role"] == "admin") {
-    header("Location: ./faculty_dashboard.php");
-    exit();
+if (isset($_SESSION["user"])) {
+    if ($_SESSION["role"] == "student") {
+        header("Location: ./student_dashboard.php");
+        exit();
+    } else if ($_SESSION["role"] == "admin") {
+        header("Location: ./faculty_dashboard.php");
+        exit();
+    }
 }
+
 
 $errors = []; // Initialize an empty array to store errors
 
@@ -45,15 +48,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Check Admins Table
-        $stmt = $conn->prepare("SELECT admin_id, name, password FROM Admins WHERE emp_id = :enrollment_no");
+        $stmt = $conn->prepare("SELECT * FROM Admins WHERE emp_id = :enrollment_no");
         $stmt->bindParam(':enrollment_no', $enrollment_no, PDO::PARAM_STR);
         $stmt->execute();
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($admin) {
             if (password_verify($password, $admin["password"])) {
-                $_SESSION['user'] = $admin["admin_id"];
+                // Set session variables for admin
+                $_SESSION['user'] = $admin["emp_id"];
                 $_SESSION['role'] = "admin";
+                $_SESSION['name'] = $admin["name"];
+                $_SESSION['email'] = $admin["email"];
+                $_SESSION['phone_no'] = $admin["phone_no"];
+
                 header("Location: ./faculty_dashboard.php");
                 exit();
             } else {
@@ -70,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <form action="./login.php" method="post">
                     <div class="input-field">
-                        <input type="text" name="enrollment_no" placeholder="Enter your Enrollment No" 
+                        <input type="text" name="enrollment_no" placeholder="Enter your Enrollment No / Employee ID" 
                                value="<?php echo htmlspecialchars($_POST['enrollment_no'] ?? ''); ?>" required />
                         <i class="uil uil-user"></i>
                     </div>
