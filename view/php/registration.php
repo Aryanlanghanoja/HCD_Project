@@ -46,6 +46,9 @@ if (isset($_POST['submit'])) {
         $password = $_POST['password'];
         $cpassword = $_POST['confirm_password'];
         $role = 'member';
+        $image = $_FILES['profile_photo']['tmp_name'];
+        $imgData = file_get_contents($image);
+        $profile_photo = base64_encode($imgData);
 
         if (!preg_match("/^[a-zA-Z]+$/", $first_name)) {
             $error[] = 'First name should contain only letters.';
@@ -54,6 +57,7 @@ if (isset($_POST['submit'])) {
         if (!preg_match("/^[a-zA-Z]+$/", $last_name)) {
             $error[] = 'Last name should contain only letters.';
         }
+        
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error[] = 'Invalid email format.';
         }
@@ -83,8 +87,8 @@ if (isset($_POST['submit'])) {
             if ($stmt->rowCount() > 0) {
                 $error[] = 'Email already exists!';
             } else {
-                $insert = "INSERT INTO students (name, email, phone_no, enrollment_no, gr_number, semester_id, class_id, batch_id, password) 
-                           VALUES (:name, :email, :phone_no, :enrollment_no, :gr_no, :semester_id, :class_id, :batch_id, :password)";
+                $insert = "INSERT INTO students (name, email, phone_no, enrollment_no, gr_number, semester_id, class_id, batch_id, password , profile_photo) 
+                           VALUES (:name, :email, :phone_no, :enrollment_no, :gr_no, :semester_id, :class_id, :batch_id, :password , :profile_photo)";
                 $stmt = $conn->prepare($insert);
                 $full_name = $first_name . " " . $last_name;
                 $stmt->bindParam(':name', $full_name);                
@@ -96,6 +100,7 @@ if (isset($_POST['submit'])) {
                 $stmt->bindParam(':class_id', $class_id);
                 $stmt->bindParam(':batch_id', $batch_id);
                 $stmt->bindParam(':password', $hashed_password);
+                $stmt->bindParam(':profile_photo', $profile_photo);
 
                 if ($stmt->execute()) {
                     // Generate a verification token
