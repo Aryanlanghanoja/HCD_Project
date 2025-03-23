@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2025 at 09:13 AM
+-- Generation Time: Mar 23, 2025 at 11:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,15 +33,17 @@ CREATE TABLE `admins` (
   `emp_id` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone_no` varchar(20) DEFAULT NULL,
-  `email` varchar(255) NOT NULL
+  `email` varchar(255) NOT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`admin_id`, `name`, `emp_id`, `password`, `phone_no`, `email`) VALUES
-(1, 'Chandrasinh Parmar', '603', '$2y$10$zN.WCkalTDCT9GS0tGarCOs.lpdOG3rVdi.XVp38fnXujbkSUTIra', '1234567890', '123@gmail.com');
+INSERT INTO `admins` (`admin_id`, `name`, `emp_id`, `password`, `phone_no`, `email`, `reset_token`, `token_expiry`) VALUES
+(1, 'Chandrasinh Parmar', '603', '$2y$10$zN.WCkalTDCT9GS0tGarCOs.lpdOG3rVdi.XVp38fnXujbkSUTIra', '1234567890', '123@gmail.com', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -185,15 +187,17 @@ CREATE TABLE `students` (
   `class_id` int(11) DEFAULT NULL,
   `batch_id` int(11) DEFAULT NULL,
   `email_verified` tinyint(1) DEFAULT 0,
-  `verification_token` varchar(255) DEFAULT NULL
+  `verification_token` varchar(255) DEFAULT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`enrollment_no`, `name`, `gr_number`, `email`, `password`, `phone_no`, `semester_id`, `class_id`, `batch_id`, `email_verified`, `verification_token`) VALUES
-('92310133007', 'Abhay Nathwani', '121182', 'abhay.nathwani121182@marwadiuniversity.ac.in', '$2y$10$zaCl44t0ALNPM6VnEYNYA.rS1/k7ukMiVd4n/ikAzff0aN5m/yaJ2', '9054987116', 6, 3, 1, 1, NULL);
+INSERT INTO `students` (`enrollment_no`, `name`, `gr_number`, `email`, `password`, `phone_no`, `semester_id`, `class_id`, `batch_id`, `email_verified`, `verification_token`, `reset_token`, `token_expiry`) VALUES
+('92310133007', 'Abhay Nathwani', '121182', 'abhay.nathwani121182@marwadiuniversity.ac.in', '$2y$10$UyoMXpp3Dtq47FeDqRCLSOz3KLFyWAPvs1wQhSb0Rnc00AhaVC6Ge', '9054987116', 6, 3, 1, 1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
