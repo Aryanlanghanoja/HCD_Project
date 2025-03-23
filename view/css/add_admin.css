@@ -1,0 +1,168 @@
+/* ===== Google Font Import - Poppins ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #02959F;
+}
+
+.container {
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0 20px;
+}
+
+.container .forms {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.container .form {
+    width: 100%;
+    padding: 30px;
+    background-color: #fff;
+}
+
+.container .form .title {
+    position: relative;
+    font-size: 27px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.form .title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    height: 3px;
+    width: 30px;
+    background-color: #D44C4C;
+    border-radius: 25px;
+}
+
+/* Error messages styling */
+.form .error-messages {
+    margin-top: 15px;
+    color: #D44C4C;
+    margin-bottom: 15px;
+    background-color: rgba(212, 76, 76, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form .success-message {
+    max-width: 15px;
+    color: #28a745;
+    margin-bottom: 15px;
+    background-color: rgba(40, 167, 69, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form .input-field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.input-field input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 0 35px;
+    outline: none;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.input-field input:focus {
+    border-color: #D44C4C;
+}
+
+.input-field i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 20px;
+    transition: all 0.2s ease;
+    z-index: 1;
+}
+
+.input-field input:focus ~ i {
+    color: #D44C4C;
+}
+
+.input-field i.icon {
+    left: 10px;
+}
+
+.input-field i.showHidePw {
+    right: 10px;
+    cursor: pointer;
+}
+
+.form .button {
+    margin-top: 30px;
+}
+
+.form .button input {
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    background-color: #D44C4C;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 50px;
+    width: 100%;
+}
+
+.button input:hover {
+    background-color: #780000;
+}
+
+.form .login-signup {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.form .login-signup .text {
+    color: #D44C4C;
+    font-size: 14px;
+}
+
+.form a.text {
+    color: #D44C4C;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.form a:hover {
+    text-decoration: underline;
+}
