@@ -34,7 +34,7 @@ const codeMirrorModes = {
 // Initialize CodeMirror with Consolas font and font size 14px
 const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
     lineNumbers: true,
-    theme: "monokai",
+    theme: "default",
     mode: "javascript",
     indentUnit: 4,
     indentWithTabs: false,
@@ -52,11 +52,19 @@ const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 });
 
 // Apply Consolas font and font size 14px
-editor.getWrapperElement().style.fontFamily = 'Consolas, monospace';
+editor.getWrapperElement().style.fontFamily = 'Fira Code';
 editor.getWrapperElement().style.fontSize = '14px';
 
+// Apply styles to the content area
+editor.on("change", function() {
+    const content = editor.getWrapperElement().querySelector('.CodeMirror-code');
+    if (content) {
+        content.style.fontFamily = 'Consolas, monospace';
+        content.style.fontSize = '14px';
+    }
+});
 // Set initial code
-editor.setValue(starterCode.javascript);
+editor.setValue(starterCode.cpp);
 
 // Language selector
 const languageSelector = document.getElementById('language-selector');
