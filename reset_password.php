@@ -272,7 +272,7 @@ body {
                 <p><?php echo $success; ?></p>
             </div>
         <?php endif; ?>
-        <form action="./reset_password.php" method="post">
+        <form action="" method="post">
             <div class="input-field">
                 <input type="password" name="password" class="password" placeholder="Enter your password" required />
                 <i class="uil uil-lock icon"></i>

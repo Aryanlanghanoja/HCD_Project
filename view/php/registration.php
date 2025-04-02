@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
         $password = $_POST['password'];
         $cpassword = $_POST['confirm_password'];
         $role = 'member';
-        $image = $_FILES['profile_photo']['tmp_name'];
+        $image = $_FILES['profile_pic']['tmp_name'];
         $imgData = file_get_contents($image);
         $profile_photo = base64_encode($imgData);
 
@@ -181,7 +181,7 @@ if (isset($_POST['submit'])) {
             }
         }
         ?>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="form">
                 <div class="fields">
                     <div class="input-field">
@@ -237,7 +237,7 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="input-field">
                         <label>Profile Photo</label>
-                        <input type="file" name="profile_photo" id="profile_pic" placeholder="Upload Your Profile Photo" required>
+                        <input type="file" name="profile_pic" id="profile_pic" placeholder="Upload Your Profile Photo" required>
                     </div>
                     <div class="input-field">
                         <label>Password</label>
