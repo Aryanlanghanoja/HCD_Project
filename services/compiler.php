@@ -37,7 +37,7 @@
 //         $outputExe = "./submissions/" . $random . ".exe";
 //         $compileOutput = shell_exec("gcc $filePath -o $outputExe 2>&1");
 //         if (!$compileOutput) {
-//             $output = shell_exec(__DIR__ . "/$outputExe 2>&1");
+//             $output = shell_exec(_DIR_ . "/$outputExe 2>&1");
 //         } else {
 //             $output = $compileOutput;
 //         }
@@ -47,7 +47,7 @@
 //         $outputExe = "./submissions/" . $random . ".exe";
 //         $compileOutput = shell_exec("g++ $filePath -o $outputExe 2>&1");
 //         if (!$compileOutput) {
-//             $output = shell_exec(__DIR__ . "/$outputExe 2>&1");
+//             $output = shell_exec(_DIR_ . "/$outputExe 2>&1");
 //         } else {
 //             $output = $compileOutput;
 //         }
@@ -272,12 +272,17 @@ $languageIds = [
 $languageId = $languageIds[$language] ?? 71;
 
 // Prepare the request data
+// Prepare the request data
 $data = [
     "source_code" => base64_encode($code),
     "language_id" => $languageId,
     "stdin" => base64_encode($stdin),
-    "cpu_time_limit" => 10.0
+    "cpu_time_limit" => 1.0,
+    "max_output_size" => 10240,  // Limit stdout to 10 KB
+    "memory_limit" => 128000,    // 128 MB memory limit
+    "stack_limit" => 64000       // 64 MB stack size limit
 ];
+
 
 // Initialize cURL to send the submission
 $ch = curl_init();
@@ -356,4 +361,3 @@ while (true) {
 
 
 ?>
-
