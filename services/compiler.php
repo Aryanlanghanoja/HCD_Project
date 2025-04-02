@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
     $code = $_POST['code'];
 
     $random = substr(md5(mt_rand()), 0, 7);
-    $filePath = "../submissions/" . $random . "." . $language;
+    $filePath = "./submissions/" . $random . "." . $language;
     $programFile = fopen($filePath, "w");
     fwrite($programFile, $code);
     fclose($programFile);
@@ -34,7 +34,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
     }
 
     if ($language == "c") {
-        $outputExe = "../submissions/" . $random . ".exe";
+        $outputExe = "./submissions/" . $random . ".exe";
         $compileOutput = shell_exec("gcc $filePath -o $outputExe 2>&1");
         if (!$compileOutput) {
             $output = shell_exec(__DIR__ . "/$outputExe 2>&1");
@@ -44,7 +44,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
     }
 
     if ($language == "cpp") {
-        $outputExe = "../submissions/" . $random . ".exe";
+        $outputExe = "./submissions/" . $random . ".exe";
         $compileOutput = shell_exec("g++ $filePath -o $outputExe 2>&1");
         if (!$compileOutput) {
             $output = shell_exec(__DIR__ . "/$outputExe 2>&1");

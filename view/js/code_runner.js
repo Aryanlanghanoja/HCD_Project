@@ -31,7 +31,7 @@ function changeLanguage() {
 
 function executeCode() {
     $.ajax({
-        url: "http://localhost/PHP_Projects/HCD_Project/services/code_runner.php",
+        url: "http://10.80.2.166/PHP_Projects/HCD_Project/services/code_runner.php",
         method: "POST",
         data: {
             language: $("#languages").val(),

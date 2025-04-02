@@ -1,44 +1,164 @@
-let editor;
+        // Starter code templates
+        const starterCode = {
+            js: `var containsDuplicate = function(nums) {
+    // Write your solution here
+    
+};`,
+            py: `class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        # Write your solution here
+        pass`,
+            java: `class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        // Write your solution here
+        
+    }
+}`,
+            cpp: `class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        // Write your solution here
+        
+    }
+};` ,
 
-window.onload = function() {
-    editor = CodeMirror(document.getElementById("editor"), {
-        mode: "text/x-csrc", // Default to C
-        theme: "default",
-        lineNumbers: true,
-        autoCloseBrackets: true,
-        matchBrackets: true
-    });
+            c: `#include <stdio.h>
 
-    // ✅ Attach event listener after CodeMirror initializes
-    document.querySelector('.CodeMirror').addEventListener("wheel", function (e) {
-        e.preventDefault();
-    }, { passive: false });
-};
+int main(){
+    // Write your solution here
+    printf("Hello, world!");
+    return 0;
+}` ,
+
+        };
+        
+        // CodeMirror mode mapping
+        const codeMirrorModes = {
+            js: "javascript",
+            py: "python",
+            java: "text/x-java",
+            cpp: "text/x-c++src",
+            c:"text/x-csrc",
+        };
+        
+        // Initialize CodeMirror
+        const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+            lineNumbers: true,
+            theme: "monokai",
+            mode: "text/x-csrc",
+            indentUnit: 4,
+            indentWithTabs: true,
+            smartIndent: true,
+            lineWrapping: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            autoCloseTags: true,
+            extraKeys: {
+                "Tab": function(cm) {
+                    if (cm.somethingSelected()) {
+                        cm.indentSelection("add");
+                    } else {
+                        cm.replaceSelection("    ", "end");
+                    }
+                }
+            }
+        });
+        
+        // Set initial code
+        editor.setValue(starterCode.c);
+        
+        // Language selector
+        const languageSelector = document.getElementById('language-selector');
+        languageSelector.addEventListener('change', function() {
+            const language = this.value;
+            editor.setOption("mode", codeMirrorModes[language]);
+            editor.setValue(starterCode[language]);
 
 
-function changeLanguage() {
-    let language = $("#languages").val();
-    let mode = "text/x-csrc";
+        });
+        
+        // Tab switching
+        const tabs = document.querySelectorAll('.test-case-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const isCustom = this.textContent === 'Custom';
+                const testCaseContent = document.querySelector('.test-case-content');
+                
+                if (isCustom) {
+                    testCaseContent.innerHTML = `<textarea class="custom-input" placeholder="Enter your test case here...">[1,2,3,1]</textarea>`;
+                } else {
+                    const testCases = {
+                        'Case 1': '[1,2,3,1]',
+                        'Case 2': '[1,2,3,4]',
+                        'Case 3': '[1,1,1,3,3,4,3,2,4,2]'
+                    };
+                    testCaseContent.innerHTML = `<textarea class="custom-input" readonly>${testCases[this.textContent]}</textarea>`;
+                }
+            });
+        });
+        
+        // Run button
+        const runButton = document.querySelector('.run');
+        // runButton.addEventListener('click', function() {
+        //     const outputPanel = document.querySelector('.output-panel');
+        //     outputPanel.textContent = '> Running...';
+            
+        //     // Simulate execution delay
+        //     setTimeout(() => {
+        //         // Get the current test case
+        //         const activeTab = document.querySelector('.test-case-tab.active');
+        //         const input = document.querySelector('.custom-input').value;
+                
+        //         // This is where you'd actually run the code
+        //         // For demo purposes, we'll just show sample output
+        //         if (activeTab.textContent === 'Case 1' || input.includes('1,2,3,1')) {
+        //             outputPanel.textContent = '> Output: true\n> Execution time: 52 ms\n> Memory usage: 46.2 MB';
+        //         } else if (activeTab.textContent === 'Case 2' || input.includes('1,2,3,4')) {
+        //             outputPanel.textContent = '> Output: false\n> Execution time: 48 ms\n> Memory usage: 45.8 MB';
+        //         } else {
+        //             outputPanel.textContent = '> Output: true\n> Execution time: 64 ms\n> Memory usage: 47.5 MB';
+        //         }
+        //     }, 800);
+        // });
+        
+        // Submit button
+        const submitButton = document.querySelector('.submit');
+        submitButton.addEventListener('click', function() {
+            const outputPanel = document.querySelector('.output-panel');
+            outputPanel.textContent = '> Submitting solution...';
+            
+            // Simulate submission delay
+            setTimeout(() => {
+                outputPanel.innerHTML = '> <span style="color: #4cc9f0;">Submission successful!</span>\n> All test cases passed.\n> Runtime: 56 ms (faster than 85.32% of submissions)\n> Memory: 46.8 MB (less than 67.21% of submissions)';
+                
+                // Show a notification
+                alert('Solution submitted successfully! All test cases passed.');
+            }, 1500);
+        });
+        
+        // Reset button
+        const resetButton = document.querySelector('.reset');
+        resetButton.addEventListener('click', function() {
+            const language = languageSelector.value;
+            editor.setValue(starterCode[language]);
+            const outputPanel = document.querySelector('.output-panel');
+            outputPanel.textContent = '> Code reset. Run your code to see output';
+        });
 
-    if (language == 'cpp') mode = "text/x-c++src";
-    else if (language == 'java') mode = "text/x-java";
-    else if (language == 'php') mode = "application/x-httpd-php";
-    else if (language == 'py') mode = "text/x-python";
-    else if (language == 'javascript') mode = "text/javascript";
-
-    editor.setOption("mode", mode);
-}
-
-function executeCode() {
-    $.ajax({
-        url: "http://localhost/PHP_Projects/HCD_Project/services/compiler.php",
-        method: "POST",
-        data: {
-            language: $("#languages").val(),
-            code: editor.getValue()
-        },
-        success: function(response) {
-            $("#output").html(response.replace(/\n/g, "<br>"));
+        function executeCode() {
+            $.ajax({
+                url: "http://10.80.2.166/PHP_Projects/HCD_Project/services/compiler.php",
+                method: "POST",
+                data: {
+                    language: $("#language-selector").val(),
+                    code: editor.getValue()
+                },
+                success: function(response) {
+                    $("#output-panel").html(response.replace(/\n/g, "<br>"));
+                }
+            });
         }
-    });
-}
+
