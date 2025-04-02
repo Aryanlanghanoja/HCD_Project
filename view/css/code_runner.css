@@ -1,3 +1,5 @@
+/* CodeArena Light Theme CSS */
+
 :root {
     --primary: #4361ee;
     --secondary: #3f37c9;
@@ -10,9 +12,10 @@
     --gray: #6c757d;
     --gray-dark: #343a40;
     --gray-light: #e9ecef;
-    --code-font: 'Consolas', 'Monaco', 'Courier New', monospace; /* Updated code font */
+    --code-font: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
+/* Reset default styles */
 * {
     margin: 0;
     padding: 0;
@@ -20,407 +23,387 @@
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
-body {
-    background-color: #f5f5f5;
-    color: var(--dark);
-    line-height: 1.6;
-    font-weight: 400;
-}
-
-.container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header Styles */
+/* Header Section */
 header {
-    background-color: white;
+    background: var(--light);
+    color: var(--dark);
+    padding: 15px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 100;
 }
 
-.nav-container {
+.container {
+    width: 90%;
+    margin: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
 }
 
+.nav-container {
+    max-width: 1400px;
+}
+
+/* Logo */
 .logo {
     font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
+    font-weight: bold;
+    color: var(--dark);
     text-decoration: none;
     display: flex;
     align-items: center;
+    transition: transform 0.2s ease;
 }
 
-.logo span {
-    color: var(--dark);
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .logo-icon {
-    margin-right: 10px;
     font-size: 28px;
+    margin-right: 8px;
+    color: var(--warning);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.logo span {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+/* Navigation Links */
 .nav-links {
-    display: flex;
     list-style: none;
-    padding-left: 10%;
+    display: flex;
 }
 
 .nav-links li {
-    margin-left: 30px;
+    margin: 0 18px;
 }
 
-.nav-links a {
+.nav-links li a {
+    color: var(--gray-dark);
     text-decoration: none;
-    color: var(--dark);
-    font-weight: 500;
-    transition: color 0.3s ease;
-    letter-spacing: 0.2px;
-}
-
-.nav-links a:hover {
-    color: var(--primary);
-}
-
-.nav-links a.active {
-    color: var(--primary);
+    font-size: 16px;
     font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
+.nav-links li a:hover {
+    color: var(--primary);
+    background-color: rgba(67, 97, 238, 0.08);
+}
+
+.nav-links li a.active {
+    color: var(--primary);
+    background-color: rgba(67, 97, 238, 0.12);
+    position: relative;
+}
+
+.nav-links li a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 3px;
+}
+
+/* User Actions (Profile Avatar) */
 .user-actions {
     display: flex;
     align-items: center;
-    padding-right: 1%;
 }
 
 .user-avatar {
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-weight: 700;
-    margin-left: 15px;
+    border-radius: 50%;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
 }
 
-/* Main Content Styles */
-main {
+.user-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+}
+
+/* Main Content Layout */
+.main-container {
+    width: 100%;
+    height: calc(100vh - 70px);
     display: flex;
-    margin-top: 20px;
-    height: calc(100vh - 100px);
+    background-color: var(--gray-light);
 }
 
-/* Problem Panel */
-.problem-panel {
-    flex: 0 0 40%;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow: auto;
-    margin-right: 20px;
+/* Split layout - side by side */
+.split-layout {
     display: flex;
-    flex-direction: column;
-}
-
-.problem-header {
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
     padding: 20px;
-    border-bottom: 1px solid var(--gray-light);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 20px;
 }
 
-.problem-title {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.problem-difficulty {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    background-color: #e9fae9;
-    color: #3a9953;
-}
-
-.problem-difficulty.medium {
-    background-color: #fff8e6;
-    color: #e69711;
-}
-
-.problem-difficulty.hard {
-    background-color: #feecec;
-    color: #e54646;
-}
-
-.problem-meta {
-    display: flex;
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--gray-light);
-    color: var(--gray);
-    font-size: 14px;
-}
-
-.problem-meta div {
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.problem-meta i {
-    margin-right: 5px;
-}
-
-.problem-content {
-    padding: 20px;
-    flex: 1;
-    overflow: auto;
-    line-height: 1.6;
-}
-
-.problem-content h3 {
-    margin: 15px 0 8px;
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--dark);
-}
-
-.problem-content p {
-    margin-bottom: 16px;
-}
-
-.problem-content code {
-    background-color: var(--gray-light);
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-family: var(--code-font); /* Updated to use Consolas */
-    font-size: 0.9em;
-}
-
-.code-example {
-    background-color: var(--gray-light);
-    padding: 12px;
-    border-radius: 5px;
-    margin: 10px 0;
-    font-family: var(--code-font); /* Updated to use Consolas */
-    white-space: pre-wrap;
-    font-size: 14px;
-}
-
-.problem-content ul {
-    padding-left: 20px;
-    margin-bottom: 16px;
-}
-
-.problem-content li {
-    margin-bottom: 6px;
-}
-
-.problem-tags {
-    padding: 15px 20px;
-    border-top: 1px solid var(--gray-light);
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.tag {
-    background-color: var(--gray-light);
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin: 5px;
-    font-size: 12px;
-    color: var(--gray-dark);
-}
-
-/* Editor Panel */
-.editor-panel {
-    flex: 1;
+/* Left side - Code Editor */
+.editor-section {
+    width: 65%;
     display: flex;
     flex-direction: column;
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
     overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
 }
 
+.editor-section:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Editor Header */
 .editor-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--gray-light);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 20px;
+    background: var(--light);
+    border-bottom: 1px solid var(--gray-light);
 }
 
+/* Language selector */
 .language-select {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
-.language-select select {
-    padding: 8px 15px;
-    border-radius: 5px;
+.language-select span {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.language-selector {
+    padding: 8px 12px;
     border: 1px solid var(--gray-light);
-    background-color: white;
-    margin-left: 10px;
+    border-radius: 6px;
+    background: white;
+    color: var(--dark);
+    font-size: 14px;
     cursor: pointer;
-    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.language-selector:hover, .language-selector:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+/* Editor Container */
+.editor-container {
+    flex: 1;
+    background: white;
+    padding: 15px;
+}
+
+/* CodeMirror customization for light theme */
+.CodeMirror {
+    height: 100%;
+    font-family: var(--code-font) !important;
+    font-size: 15px;
+    line-height: 1.6;
+    border-radius: 6px;
+    border: 1px solid var(--gray-light);
+}
+
+/* Setting a light theme for CodeMirror */
+.cm-s-default {
+    background-color: white !important;
+}
+
+.cm-s-default .cm-keyword {
+    color: var(--secondary) !important;
+}
+
+.cm-s-default .cm-string {
+    color: var(--success) !important;
+}
+
+.cm-s-default .cm-comment {
+    color: var(--gray) !important;
+    font-style: italic;
+}
+
+.cm-s-default .cm-number {
+    color: var(--danger) !important;
+}
+
+.cm-s-default .cm-property {
+    color: var(--info) !important;
+}
+
+.cm-s-default .cm-operator {
+    color: var(--warning) !important;
+}
+
+/* Buttons */
+.editor-actions {
+    display: flex;
+    gap: 10px;
 }
 
 .editor-actions button {
-    background-color: var(--gray-light);
+    padding: 8px 18px;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    margin-left: 10px;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    font-family: inherit;
-}
-
-.editor-actions button:hover {
-    background-color: var(--gray);
-    color: white;
-}
-
-.editor-actions button.run {
-    background-color: var(--primary);
-    color: white;
-}
-
-.editor-actions button.run:hover {
-    background-color: var(--secondary);
-}
-
-.editor-actions button.submit {
-    background-color: var(--success);
-    color: white;
-}
-
-.editor-actions button.submit:hover {
-    background-color: var(--info);
-}
-
-/* CodeMirror Custom Styles */
-.editor-container {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-    font-family: var(--code-font); /* Updated to use Consolas */
-    font-size: 14px;
-}
-
-.CodeMirror {
-    height: 100%;
-    font-family: var(--code-font) !important; /* Updated to use Consolas with !important */
-    font-size: 14px;
-}
-
-.editor-footer {
-    padding: 15px 20px;
-    border-top: 1px solid var(--gray-light);
-}
-
-.test-cases {
-    margin-bottom: 15px;
-}
-
-.test-case-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--gray-light);
-    margin-bottom: 10px;
-}
-
-.test-case-tab {
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    border-bottom: 2px solid transparent;
-}
-
-.test-case-tab.active {
-    border-bottom: 2px solid var(--primary);
-    color: var(--primary);
-    font-weight: 500;
-}
-
-.test-case-content {
-    padding: 10px;
-    background-color: var(--gray-light);
-    border-radius: 5px;
-}
-
-.custom-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--gray-light);
-    border-radius: 5px;
-    font-family: var(--code-font); /* Updated to use Consolas */
-    resize: vertical;
-    min-height: 80px;
-}
-
-.output-panel {
-    padding: 15px;
-    background-color: #2d2d2d;
-    color: white;
-    border-radius: 5px;
-    font-family: var(--code-font); /* Updated to use Consolas */
-    overflow: auto;
-    height: 100px;
-}
-
-/* Utilities */
-.badge {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-size: 12px;
     font-weight: 600;
-    margin-left: 10px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.badge-success {
-    background-color: #e9fae9;
-    color: #3a9953;
+.reset {
+    background: var(--gray-light);
+    color: var(--gray-dark);
 }
 
-.badge-warning {
-    background-color: #fff8e6;
-    color: #e69711;
+.reset:hover {
+    background: var(--gray);
+    color: white;
 }
 
-.badge-danger {
-    background-color: #feecec;
-    color: #e54646;
+.run {
+    background: var(--success);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.run:hover {
+    background: #3db5db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 201, 240, 0.3);
+}
+
+.submit {
+    background: var(--primary);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit:hover {
+    background: #3050d8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+}
+
+.editor-actions button:active {
+    transform: translateY(1px);
+}
+
+.editor-actions button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+    z-index: -1;
+}
+
+.editor-actions button:hover::before {
+    left: 100%;
+}
+
+/* Right side - Output Panel */
+.output-section {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.output-section:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Output panel header */
+.output-header {
+    font-weight: bold;
+    padding: 15px;
+    background: var(--light);
+    color: var(--dark);
+    text-align: center;
+    border-bottom: 1px solid var(--gray-light);
+    font-size: 16px;
+}
+
+/* Output panel styling */
+.output-panel {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    color: var(--dark);
+    font-family: var(--code-font);
+    overflow: auto;
+    white-space: pre-wrap;
+    border-radius: 0 0 10px 10px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Console-like output styling */
+#output-panel {
+    position: relative;
+}
+
+#output-panel::before {
+    content: '>';
+    color: var(--success);
+    margin-right: 8px;
 }
 
 /* Responsive Design */
 @media (max-width: 992px) {
-    main {
+    .split-layout {
         flex-direction: column;
-        height: auto;
     }
     
-    .problem-panel, .editor-panel {
-        flex: 1;
-        margin-right: 0;
-        margin-bottom: 20px;
-        height: auto;
-        min-height: 400px;
+    .editor-section, .output-section {
+        width: 100%;
+    }
+    
+    .output-section {
+        margin-top: 20px;
+        height: 300px;
     }
 }
 
@@ -428,4 +411,31 @@ main {
     .nav-links {
         display: none;
     }
+    
+    .editor-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .language-select, .editor-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* Animation for Run and Submit buttons */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(67, 97, 238, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(67, 97, 238, 0);
+    }
+}
+
+.run:focus, .submit:focus {
+    animation: pulse 1.5s infinite;
 }
