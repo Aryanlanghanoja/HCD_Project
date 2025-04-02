@@ -25,9 +25,9 @@ bool containsDuplicate(vector<int>& nums) {
     c: `#include <stdio.h>
 
 int main(){
-// Write your solution here
-printf("Hello, world!");
-return 0;
+    // Write your solution here
+    printf("Hello, world!");
+    return 0;
 }` ,
 
 };
