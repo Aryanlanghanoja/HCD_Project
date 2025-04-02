@@ -24,18 +24,35 @@ function changeLanguage() {
     else if (language == 'java') mode = "text/x-java";
     else if (language == 'php') mode = "application/x-httpd-php";
     else if (language == 'py') mode = "text/x-python";
-    else if (language == 'javascript') mode = "text/javascript";
+    else if (language == 'js') mode = "text/javascript";
 
     editor.setOption("mode", mode);
 }
 
+// function executeCode() {
+//     $.ajax({
+//         url: "http://10.80.2.166/PHP_Projects/HCD_Project/services/code_runner.php",
+//         method: "POST",
+//         data: {
+//             language: $("#languages").val(),
+//             code: editor.getValue()
+//         },
+//         success: function(response) {
+//             $("#output").html(response.replace(/\n/g, "<br>"));
+//         }
+//     });
+// }
+
+
+
 function executeCode() {
     $.ajax({
-        url: "http://10.80.2.166/PHP_Projects/HCD_Project/services/code_runner.php",
+        url: "http://10.80.11.230/HCD_Project/services/compiler.php",
         method: "POST",
         data: {
             language: $("#languages").val(),
-            code: editor.getValue()
+            code: editor.getValue(),
+            input: $(".custom-input").val()
         },
         success: function(response) {
             $("#output").html(response.replace(/\n/g, "<br>"));
