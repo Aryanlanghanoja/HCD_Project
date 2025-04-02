@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeArena | Competitive Programming Platform</title>
+    
+    <!-- External Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/inter/3.19.3/inter.css" rel="stylesheet">
+    
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    
+    <link rel="stylesheet" href="../css/code_runner.css">
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">⚡</span>
+                Code<span>Arena</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Problems</a></li>
+                <li><a href="#">Contests</a></li>
+                <li><a href="#">Discuss</a></li>
+                <li><a href="#">Leaderboard</a></li>
+                <li><a href="#">Interview Prep</a></li>
+            </ul>
+            <div class="user-actions">
+                <div class="user-avatar">JS</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <div class="problem-panel">
+                <div class="problem-header">
+                    <div class="problem-title">217. Contains Duplicate</div>
+                    <div class="problem-difficulty">Easy</div>
+                </div>
+                <div class="problem-meta">
+                    <div class="acceptance-rate"><i class="fas fa-check-circle"></i> 61.4% Acceptance</div>
+                    <div class="submissions"><i class="fas fa-sync"></i> 3.2M Submissions</div>
+                    <div class="favorites"><i class="fas fa-star"></i> 23K</div>
+                </div>
+                <div class="problem-content">
+                    <p>Given an integer array <code>nums</code>, return <code>true</code> if any value appears <b>at least twice</b> in the array, and return <code>false</code> if every element is distinct.</p>
+                    
+                    <h3>Example 1:</h3>
+                    <div class="code-example">Input: nums = [1,2,3,1] 
+Output: true</div>
+                    
+                    <h3>Example 2:</h3>
+                    <div class="code-example">Input: nums = [1,2,3,4] 
+Output: false</div>
+                    
+                    <h3>Example 3:</h3>
+                    <div class="code-example">Input: nums = [1,1,1,3,3,4,3,2,4,2] 
+Output: true</div>
+                    
+                    <h3>Constraints:</h3>
+                    <ul>
+                        <li>1 <= nums.length <= 10<sup>5</sup></li>
+                        <li>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></li>
+                    </ul>
+                </div>
+                <div class="problem-tags">
+                    <div class="tag">Array</div>
+                    <div class="tag">Hash Table</div>
+                    <div class="tag">Sorting</div>
+                </div>
+            </div>
+
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <div class="language-select">
+                        <span>Language:</span>
+                        <select id="language-selector" class="language-selector">
+                            <option value="c">C</option>
+                            <option value="cpp">C++</option>
+                            <option value="java">Java</option>
+                            <option value="py">Python</option>
+                            <option value="js">JavaScript</option>
+                        </select>
+                    </div>
+                    <div class="editor-actions">
+                        <button class="reset">Reset</button>
+                        <button class="run" onclick="executeCode()">Run</button>
+                        <button class="submit">Submit</button>
+                    </div>
+                </div>
+                <div class="editor-container">
+                    <textarea id="code-editor"></textarea>
+                </div>
+                <div class="editor-footer">
+                    <div class="test-cases">
+                        <div class="test-case-tabs">
+                            <div class="test-case-tab">Case 1</div>
+                            <div class="test-case-tab">Case 2</div>
+                            <div class="test-case-tab">Case 3</div>
+                        </div>
+                        <div class="test-case-content">
+                            <textarea class="custom-input" placeholder="Enter your test case here...">[1,2,3,1]</textarea>
+                        </div>
+                    </div>
+                    <div class="output-panel" id="output-panel">
+                        > Run your code to see output
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/code_runner.js"></script>
+</body>
+</html>

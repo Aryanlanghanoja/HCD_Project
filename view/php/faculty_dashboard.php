@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="../css//faculty_dashboard.css">
 	<link rel="shortcut icon" href="../../assets/images/Fevicon.png" type="image/x-icon">
 	<title>Faculty Dashboard</title>
-</head>
+</head>	
 <body>
 	
 	<!-- SIDEBAR -->
@@ -69,28 +69,28 @@
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
-			<i class='bx bx-menu toggle-sidebar' ></i>
+			<i class='bx bx-menu toggle-sidebar'></i>
 			<form action="#">
 				<div class="form-group">
 					<input type="text" placeholder="Search...">
-					<i class='bx bx-search icon' ></i>
+					<i class='bx bx-search icon'></i>
 				</div>
 			</form>
-			<a href="#" class="nav-link">
-				<i class='bx bxs-bell icon' ></i>
+			<!-- <a href="#" class="nav-link">
+				<i class='bx bxs-bell icon'></i>
 				<span class="badge">5</span>
 			</a>
 			<a href="#" class="nav-link">
-				<i class='bx bxs-message-square-dots icon' ></i>
+				<i class='bx bxs-message-square-dots icon'></i>
 				<span class="badge">8</span>
-			</a>
+			</a> -->
 			<span class="divider"></span>
-			<div class="profile">
+			<div class="profile" id="profile">
 				<img src="../../assets/images/Admin.jpg" alt="">
 				<ul class="profile-link">
-					<li><a href="#"><i class='bx bxs-user-circle icon' ></i> Profile</a></li>
-					<li><a href="#"><i class='bx bxs-cog' ></i> Settings</a></li>
-					<li><a href="./logout.php"><i class='bx bxs-log-out-circle' ></i> Logout</a></li>
+					<li><a href="#"><i class='bx bxs-user-circle icon'></i> Profile</a></li>
+					<li><a href="#"><i class='bx bxs-cog'></i> Settings</a></li>
+					<li><a href="./logout.php"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -109,7 +109,7 @@
 					<div class="head">
 						<div>
 							<h2>1500</h2>
-							<p>Traffic</p>
+							<p>Submissions</p>
 						</div>
 						<i class='bx bx-trending-up icon' ></i>
 					</div>
@@ -120,29 +120,29 @@
 					<div class="head">
 						<div>
 							<h2>234</h2>
-							<p>Sales</p>
+							<p>Participants</p>
 						</div>
-						<i class='bx bx-trending-down icon down' ></i>
+						<i class='bx bx-trending-up icon' ></i>
 					</div>
 					<span class="progress" data-value="60%"></span>
 					<span class="label">60%</span>
 				</div>
-				<div class="card">
+				<!-- <div class="card">
 					<div class="head">
 						<div>
 							<h2>465</h2>
-							<p>Pageviews</p>
+							<p>Problems</p>
 						</div>
 						<i class='bx bx-trending-up icon' ></i>
 					</div>
 					<span class="progress" data-value="30%"></span>
 					<span class="label">30%</span>
-				</div>
+				</div> -->
 				<div class="card">
 					<div class="head">
 						<div>
 							<h2>235</h2>
-							<p>Visitors</p>
+							<p>Submissions</p>
 						</div>
 						<i class='bx bx-trending-up icon' ></i>
 					</div>
