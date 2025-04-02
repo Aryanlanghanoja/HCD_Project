@@ -169,3 +169,17 @@ tooltip: {
 
 var chart = new ApexCharts(document.querySelector("#chart"), options);
 chart.render();
+
+document.addEventListener("DOMContentLoaded", function () {
+	const profile = document.getElementById("profile");
+	const profileLink = profile.querySelector(".profile-link");
+
+	profile.addEventListener("click", function (event) {
+		event.stopPropagation(); // Prevents closing when clicking inside the profile
+		profileLink.style.display = (profileLink.style.display === "block") ? "none" : "block";
+	});
+
+	document.addEventListener("click", function () {
+		profileLink.style.display = "none"; // Close when clicking outside
+	});
+});
