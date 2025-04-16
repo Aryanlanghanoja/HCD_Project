@@ -61,10 +61,10 @@ try {
             </a>
             <ul class="nav-links">
                 <li><a href="#" class="active">Problems</a></li>
-                <li><a href="#">Contests</a></li>
+                <li><a href="#">Exam</a></li>
                 <li><a href="#">Discuss</a></li>
                 <li><a href="#">Leaderboard</a></li>
-                <li><a href="#">Interview Prep</a></li>
+                <li><a href="#">Interview Preparation Resources</a></li>
             </ul>
             <div class="user-actions">
                 <div class="user-avatar">JS</div>

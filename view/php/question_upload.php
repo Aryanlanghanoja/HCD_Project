@@ -139,11 +139,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-group">
                             <label class="form-label">Difficulty Level</label>
                             <div class="custom-difficulty-select">
-                                <div class="custom-difficulty-option easy" data-value="easy">Easy</div>
-                                <div class="custom-difficulty-option medium selected" data-value="medium">Medium</div>
-                                <div class="custom-difficulty-option hard" data-value="hard">Hard</div>
+                                <div class="custom-difficulty-option easy" data-value="Easy">Easy</div>
+                                <div class="custom-difficulty-option medium selected" data-value="Medium">Medium</div>
+                                <div class="custom-difficulty-option hard" data-value="Hard">Hard</div>
                             </div>
-                            <input type="hidden" name="difficulty" id="difficultyInput" value="medium">
+                            <input type="hidden" name="difficulty" id="difficultyInput" value="Medium">
                         </div>
 
                         <div class="form-group">
