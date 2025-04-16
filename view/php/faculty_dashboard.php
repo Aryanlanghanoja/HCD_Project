@@ -54,7 +54,10 @@
 
 			<li><a href="#"><i class='bx bx-list-ul icon'></i> Student List</a></li>
 
-			<li><a href="#"><i class='bx bx-user icon'></i> Add Faculty</a></li>
+			<?php if ($_SESSION["user"] === "603"): ?>
+	<li><a href="./add_admin.php"><i class='bx bx-user icon'></i> Add Faculty</a></li>
+<?php endif; ?>
+
 
 			<li><a href="#"><i class='bx bx-cog icon'></i> Settings</a></li>
 
