@@ -90,7 +90,7 @@ Output: true</div>
                 <div class="editor-header">
                     <div class="language-select">
                         <span>Language:</span>
-                        <select id="language-selector" class="language-selector">
+                        <select id="language-selector" class="language-selector" title="Select programming language">
                             <option value="c">C</option>
                             <option value="cpp">C++</option>
                             <option value="java">Java</option>
@@ -105,7 +105,11 @@ Output: true</div>
                     </div>
                 </div>
                 <div class="editor-container">
-                    <textarea id="code-editor"></textarea>
+                    <textarea 
+                        id="code-editor"
+                        title="Code editor"
+                        placeholder="Write your code here..."
+                    ></textarea>    
                 </div>
                 <div class="editor-footer">
                     <div class="test-cases">

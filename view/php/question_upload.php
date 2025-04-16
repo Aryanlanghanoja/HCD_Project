@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $description = $_POST['description'] ?? '';
         $difficulty = $_POST['difficulty'] ?? 'medium';
         $tags = $_POST['tags'] ?? '';
+        $constraints = $_POST['constraints']?? '';
 
         $example1_input = $_POST['example1Input'] ?? '';
         $example1_output = $_POST['example1Output'] ?? '';
@@ -27,13 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Step 2: Insert initial question (file paths as temporary)
         $sqlInsert = "INSERT INTO questions (
-            question_title, description, difficulty, tags,
+            question_title, description, difficulty, constraints ,tags,
             testcase, expected_output,
             example_testcase_1, example_outcome_1, explanation_1,
             example_testcase_2, example_outcome_2, explanation_2,
             example_testcase_3, example_outcome_3, explanation_3
         ) VALUES (
-            :title, :description, :difficulty, :tags,
+            :title, :description, :difficulty, :constraints , :tags,
             '', '',
             :ex1_in, :ex1_out, :ex1_exp,
             :ex2_in, :ex2_out, :ex2_exp,
@@ -45,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':title' => $title,
             ':description' => $description,
             ':difficulty' => $difficulty,
+            ':constraints' => $constraints,
             ':tags' => $tags,
             ':ex1_in' => $example1_input,
             ':ex1_out' => $example1_output,
@@ -155,6 +157,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-group tags-input">
                             <label class="form-label" for="tags">Tags</label>
                             <input type="text" class="form-control" id="tagInput"  name="tags"  placeholder="Type tag and press Enter (e.g., Arrays, Dynamic Programming)">
+                            <div class="tags-container" id="tagsContainer"></div>
+                        </div>
+
+                        <div class="form-group tags-input">
+                            <label class="form-label" for="tags">Constraints</label>
+                            <input type="text" class="form-control" id="tagInput"  name="constraints"  placeholder="Add Constraints Here">
                             <div class="tags-container" id="tagsContainer"></div>
                         </div>
 
