@@ -1,10 +1,14 @@
 <?php
-
+session_start();
 require_once '../../config/db.config.php';
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
-
+if (!isset($_SESSION["user"])) {
+    // User not logged in
+    header("Location: ./login.php");
+    exit();
+}
 try {
     $stmt = $conn->query('SELECT * FROM questions ORDER BY question_id  ASC');
     $questions = $stmt->fetchAll();
