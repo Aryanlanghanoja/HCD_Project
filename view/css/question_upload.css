@@ -108,6 +108,12 @@ header {
     margin-bottom: 20px;
 }
 
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+    width: 100%;
+}
+
 .form-label {
     display: block;
     margin-bottom: 8px;
@@ -186,6 +192,117 @@ textarea.form-control {
 .difficulty-option.selected.hard {
     background-color: #feecec;
     border-color: #e54646;
+}
+
+/* Enhanced Difficulty Select Dropdown */
+.difficulty-select {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+select.difficulty-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    background-color: #f9fafb;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+select.difficulty-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Difficulty color indicators */
+select.difficulty-select option[value="easy"] {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #166534;
+}
+
+select.difficulty-select option[value="medium"] {
+    background-color: rgba(249, 115, 22, 0.1);
+    color: #9a3412;
+}
+
+select.difficulty-select option[value="hard"] {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+/* Custom difficulty select styling */
+.custom-difficulty-select {
+    display: flex;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.custom-difficulty-option {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.custom-difficulty-option.easy {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #166534;
+}
+
+.custom-difficulty-option.medium {
+    background-color: rgba(249, 115, 22, 0.1);
+    color: #9a3412;
+}
+
+.custom-difficulty-option.hard {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+.custom-difficulty-option.selected {
+    border-bottom: 3px solid currentColor;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-difficulty-option.easy.selected {
+    background-color: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+}
+
+.custom-difficulty-option.medium.selected {
+    background-color: rgba(249, 115, 22, 0.2);
+    border-color: #f97316;
+}
+
+.custom-difficulty-option.hard.selected {
+    background-color: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+}
+
+.custom-difficulty-option:hover {
+    filter: brightness(1.05);
 }
 
 .btn {

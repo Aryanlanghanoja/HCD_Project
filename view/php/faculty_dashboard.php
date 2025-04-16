@@ -39,8 +39,8 @@
 			<li>
 				<a href="#"><i class='bx bx-question-mark icon'></i> Questions <i class='bx bx-chevron-right icon-right'></i></a>
 				<ul class="side-dropdown">
-					<li><a href="#"><i class='bx bx-plus-circle icon'></i> Add</a></li>
-					<li><a href="#"><i class='bx bx-show icon'></i> View</a></li>
+					<li><a href="./question_upload.php"><i class='bx bx-plus-circle icon'></i> Add</a></li>
+					<li><a href="./question_list.php"><i class='bx bx-show icon'></i> View</a></li>
 				</ul>
 			</li>
 

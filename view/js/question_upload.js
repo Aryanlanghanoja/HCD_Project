@@ -264,3 +264,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// For the custom button-style difficulty selector
+document.addEventListener('DOMContentLoaded', function() {
+    const difficultyOptions = document.querySelectorAll('.custom-difficulty-option');
+    const difficultyInput = document.getElementById('difficultyInput');
+    
+    difficultyOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove selected class from all options
+            difficultyOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selected class to clicked option
+            this.classList.add('selected');
+            
+            // Update hidden input value
+            difficultyInput.value = this.getAttribute('data-value');
+        });
+    });
+});
