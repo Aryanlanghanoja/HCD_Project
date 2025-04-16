@@ -13,6 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $difficulty = $_POST['difficulty'] ?? 'medium';
         $tags = $_POST['tags'] ?? '';
         $constraints = $_POST['constraints']?? '';
+        $testcases = $_POST['testcases']?? '';
+        $expected_outcome = $_POST['expected_outcome']?? '';
 
         $example1_input = $_POST['example1Input'] ?? '';
         $example1_output = $_POST['example1Output'] ?? '';
@@ -35,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             example_testcase_3, example_outcome_3, explanation_3
         ) VALUES (
             :title, :description, :difficulty, :constraints , :tags,
-            '', '',
+            :testcases, :expected_outcome,
             :ex1_in, :ex1_out, :ex1_exp,
             :ex2_in, :ex2_out, :ex2_exp,
             :ex3_in, :ex3_out, :ex3_exp
@@ -48,6 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':difficulty' => $difficulty,
             ':constraints' => $constraints,
             ':tags' => $tags,
+            ':testcases' => $testcases,
+            ':expected_outcome' => $expected_outcome,
             ':ex1_in' => $example1_input,
             ':ex1_out' => $example1_output,
             ':ex1_exp' => $example1_explanation,
@@ -59,33 +63,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':ex3_exp' => $example3_explanation,
         ]);
 
-        $question_id = $conn->lastInsertId();
+        // $question_id = $conn->lastInsertId();
 
-        // Step 3: Save uploaded files with new names
-        $testcasePath = '';
-        $outputPath = '';
+        // // Step 3: Save uploaded files with new names
+        // $testcasePath = '';
+        // $outputPath = '';
 
-        if (isset($_FILES['testcaseFile']) && $_FILES['testcaseFile']['error'] == 0) {
-            $testcasePath = '../../questions/' . $question_id . '_testcase.txt';
-            move_uploaded_file($_FILES['testcaseFile']['tmp_name'], $testcasePath);
-        }
+        // if (isset($_FILES['testcaseFile']) && $_FILES['testcaseFile']['error'] == 0) {
+        //     $testcasePath = '../../questions/' . $question_id . '_testcase.txt';
+        //     move_uploaded_file($_FILES['testcaseFile']['tmp_name'], $testcasePath);
+        // }
 
-        if (isset($_FILES['outputFile']) && $_FILES['outputFile']['error'] == 0) {
-            $outputPath = '../../questions/' . $question_id . '_expected_output.txt';
-            move_uploaded_file($_FILES['outputFile']['tmp_name'], $outputPath);
-        }
+        // if (isset($_FILES['outputFile']) && $_FILES['outputFile']['error'] == 0) {
+        //     $outputPath = '../../questions/' . $question_id . '_expected_output.txt';
+        //     move_uploaded_file($_FILES['outputFile']['tmp_name'], $outputPath);
+        // }
 
-        // Step 4: Update record with file paths
-        $sqlUpdate = "UPDATE questions SET testcase = :testcase, expected_output = :output WHERE question_id = :qid";
-        $stmtUpdate = $conn->prepare($sqlUpdate);
-        $stmtUpdate->execute([
-            ':testcase' => $testcasePath,
-            ':output' => $outputPath,
-            ':qid' => $question_id
-        ]);
+        // // Step 4: Update record with file paths
+        // $sqlUpdate = "UPDATE questions SET testcase = :testcase, expected_output = :output WHERE question_id = :qid";
+        // $stmtUpdate = $conn->prepare($sqlUpdate);
+        // $stmtUpdate->execute([
+        //     ':testcase' => $testcasePath,
+        //     ':output' => $outputPath,
+        //     ':qid' => $question_id
+        // ]);
 
         $conn->commit();
-        echo "✅ Question uploaded successfully with ID: $question_id";
+        echo "✅ Question uploaded successfully";
         exit;
 
     } catch (PDOException $e) {
@@ -134,19 +138,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="form-group">
                             <label class="form-label">Difficulty Level</label>
-                            <!-- <div class="difficulty-select">
-                                <div class="difficulty-option easy" data-difficulty="easy">Easy</div>
-                                <div class="difficulty-option medium" data-difficulty="medium">Medium</div>
-                                <div class="difficulty-option hard" data-difficulty="hard">Hard</div>
-                            </div> -->
-
-                            <select name="difficulty" class="difficulty-select">
-                        
-                                <option value="easy" class="difficulty-option easy">Easy</option>
-                                <option value="medium" class="difficulty-option medium" selected>Medium</option>
-                                <option value="hard" class="difficulty-option hard">Hard</option>
-                            </select>
-                            <input type="hidden" id="difficulty" value="medium">
+                            <div class="custom-difficulty-select">
+                                <div class="custom-difficulty-option easy" data-value="easy">Easy</div>
+                                <div class="custom-difficulty-option medium selected" data-value="medium">Medium</div>
+                                <div class="custom-difficulty-option hard" data-value="hard">Hard</div>
+                            </div>
+                            <input type="hidden" name="difficulty" id="difficultyInput" value="medium">
                         </div>
 
                         <div class="form-group">
@@ -165,27 +162,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="text" class="form-control" id="tagInput"  name="constraints"  placeholder="Add Constraints Here">
                             <div class="tags-container" id="tagsContainer"></div>
                         </div>
-
-                        <div class="form-section-title">Files</div>
                         
                         <div class="form-group">
-                            <label class="form-label" for="testcaseFile">Test Cases File</label>
-                            <div class="file-upload" id="testcaseUpload">
-                                <i>📁</i>
-                                <p>Click to upload or drag and drop</p>
-                                <input type="file" id="testcaseFile" name="testcaseFile">
-                            </div>
-                            <small id="testcaseFileName" style="display: none;"></small>
+                        <label class="form-label" for="testcases">Problem Description</label>
+                        <textarea class="form-control" id="testcases" name="testcases" placeholder="Enter A Testcases Here" required></textarea>
+                        <small id="testcases" style="display: none;"></small>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label" for="outputFile">Expected Output File</label>
-                            <div class="file-upload" id="outputUpload" name="outputFile">
-                                <i>📁</i>
-                                <p>Click to upload or drag and drop</p>
-                                <input type="file" id="outputFile" name="outputFile">
-                            </div>
-                            <small id="outputFileName" style="display: none;"></small>
+                            <label class="form-label" for="expected_outcome">Problem Description</label>
+                            <textarea class="form-control" id="expected_outcome" name="expected_outcome" placeholder="Enter A Outcome Here" required></textarea>
+                            <small id="expected_outcome" style="display: none;"></small>
                         </div>
                     </div>
                 </div>

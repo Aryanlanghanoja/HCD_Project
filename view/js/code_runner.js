@@ -142,8 +142,8 @@ const runButton = document.querySelector('.run');
 
 function executeCode() {
     const inputs = document.getElementById("input").value;
-    console.log(inputs)
-    console.log()
+    // console.log(inputs)
+    // console.log(typeof(inputs))
     $.ajax({
         url: "http://10.80.21.246/HCD_Project/services/compiler.php",
         method: "POST",
