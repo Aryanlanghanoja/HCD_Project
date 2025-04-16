@@ -161,14 +161,7 @@ try {
                 </div>
                 <div class="editor-footer">
                     <div class="test-cases">
-                        <div class="test-case-tabs">
-                            <div class="test-case-tab">Case 1</div>
-                            <div class="test-case-tab">Case 2</div>
-                            <div class="test-case-tab">Case 3</div>
-                        </div>
-                        <div class="test-case-content">
-                            <textarea class="custom-input" placeholder="Enter your test case here...">[1,2,3,1]</textarea>
-                        </div>
+                        <h1>Output</h1>
                     </div>
                     <div class="output-panel" id="output-panel">
                         > Run your code to see output
