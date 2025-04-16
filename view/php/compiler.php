@@ -1,5 +1,27 @@
 <?php
+require_once '../../config/db.config.php';
+require '../../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
 
+try {
+    if (isset($_GET['question_id'])) {
+        $question_id = $_GET['question_id'];
+    
+        // Use prepared statement for safety
+        $stmt = $conn->prepare('SELECT * FROM questions WHERE question_id = :question_id');
+        $stmt->execute(['question_id' => $question_id]);
+        $questions = $stmt->fetchAll();
+        $question = $questions[0];
+    
+    } else {
+        header("Location: ./question_list.php");
+        exit;
+    }
+} catch (\PDOException $e) {
+    echo "Database connection failed: " . $e->getMessage();
+    die();
+}
 ?>
 
 <!DOCTYPE html>
@@ -54,39 +76,61 @@
         <main>
             <div class="problem-panel">
                 <div class="problem-header">
-                    <div class="problem-title">217. Contains Duplicate</div>
-                    <div class="problem-difficulty">Easy</div>
+                    <div class="problem-title"><?php echo htmlspecialchars($question['question_id']); ?> . <?php echo htmlspecialchars($question['question_title']); ?></div>
+
+
+                    <?php
+    $difficulty = htmlspecialchars($question['difficulty']);
+
+    // Define class based on difficulty
+    $difficultyClass = '';
+    if ($difficulty === 'Easy') {
+        $difficultyClass = 'easy';
+    } elseif ($difficulty === 'Medium') {
+        $difficultyClass = 'medium';
+    } elseif ($difficulty === 'Hard') {
+        $difficultyClass = 'hard';
+    }
+?>
+
+<div class="problem-difficulty <?php echo $difficultyClass; ?>">
+    <?php echo $difficulty; ?>
+</div>
+
                 </div>
                 <div class="problem-meta">
-                    <div class="acceptance-rate"><i class="fas fa-check-circle"></i> 61.4% Acceptance</div>
-                    <div class="submissions"><i class="fas fa-sync"></i> 3.2M Submissions</div>
-                    <div class="favorites"><i class="fas fa-star"></i> 23K</div>
+                    <?php
+                    $tags = explode(',', $question['tags']);
+
+                    for ($i = 0; $i < count($tags); $i++) {
+                        $tags[$i] = trim($tags[$i]);
+
+                        echo '<div class="tag">' . $tags[$i] . '</div>';
+                    }
+                    ?>
                 </div>
                 <div class="problem-content">
-                    <p>Given an integer array <code>nums</code>, return <code>true</code> if any value appears <b>at least twice</b> in the array, and return <code>false</code> if every element is distinct.</p>
+                    <p><?php echo htmlspecialchars($question['description']); ?></p>
                     
                     <h3>Example 1:</h3>
-                    <div class="code-example">Input: nums = [1,2,3,1] 
-Output: true</div>
-                    
+                    <?php  echo '<div class="code-example"><b>Input:</b>' .  htmlspecialchars($question['example_testcase_1']) . '<br><b>Output:</b>' .  htmlspecialchars($question['example_outcome_1']) . '<br><b>Explanation:</b> ' .  htmlspecialchars($question['explanation_1']).'</div>';?>
                     <h3>Example 2:</h3>
-                    <div class="code-example">Input: nums = [1,2,3,4] 
-Output: false</div>
-                    
+                    <?php  echo '<div class="code-example"><b>Input:</b>' .  htmlspecialchars($question['example_testcase_2']) . '<br><b>Output:</b>' .  htmlspecialchars($question['example_outcome_2']) . '<br><b>Explanation:</b> ' .  htmlspecialchars($question['explanation_2']).'</div>';?>
                     <h3>Example 3:</h3>
-                    <div class="code-example">Input: nums = [1,1,1,3,3,4,3,2,4,2] 
-Output: true</div>
+                    <?php  echo '<div class="code-example"><b>Input:</b>' .  htmlspecialchars($question['example_testcase_3']) . '<br><b>Output:</b>' .  htmlspecialchars($question['example_outcome_3']) . '<br><b>Explanation:</b> ' .  htmlspecialchars($question['explanation_3']).'</div>';?>
                     
                     <h3>Constraints:</h3>
                     <ul>
-                        <li>1 <= nums.length <= 10<sup>5</sup></li>
-                        <li>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></li>
+                    <?php
+                    $constraints = explode(',', $question['constraints']);
+
+                    for ($i = 0; $i < count($constraints); $i++) {
+                        $constraints[$i] = trim($constraints[$i]);
+
+                        echo '<li>' . $constraints[$i] . '</li>';
+                    }
+                    ?>
                     </ul>
-                </div>
-                <div class="problem-tags">
-                    <div class="tag">Array</div>
-                    <div class="tag">Hash Table</div>
-                    <div class="tag">Sorting</div>
                 </div>
             </div>
 
