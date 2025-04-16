@@ -117,28 +117,28 @@ const runButton = document.querySelector('.run');
 // });
 
 // Submit button
-const submitButton = document.querySelector('.submit');
-submitButton.addEventListener('click', function() {
-    const outputPanel = document.querySelector('.output-panel');
-    outputPanel.textContent = '> Submitting solution...';
+// const submitButton = document.querySelector('.submit');
+// submitButton.addEventListener('click', function() {
+//     const outputPanel = document.querySelector('.output-panel');
+//     outputPanel.textContent = '> Submitting solution...';
     
-    // Simulate submission delay
-    setTimeout(() => {
-        outputPanel.innerHTML = '> <span style="color: #4cc9f0;">Submission successful!</span>\n> All test cases passed.\n> Runtime: 56 ms (faster than 85.32% of submissions)\n> Memory: 46.8 MB (less than 67.21% of submissions)';
+//     // Simulate submission delay
+//     setTimeout(() => {
+//         outputPanel.innerHTML = '> <span style="color: #4cc9f0;">Submission successful!</span>\n> All test cases passed.\n> Runtime: 56 ms (faster than 85.32% of submissions)\n> Memory: 46.8 MB (less than 67.21% of submissions)';
         
-        // Show a notification
-        alert('Solution submitted successfully! All test cases passed.');
-    }, 1500);
-});
+//         // Show a notification
+//         alert('Solution submitted successfully! All test cases passed.');
+//     }, 1500);
+// });
 
 // Reset button
-const resetButton = document.querySelector('.reset');
-resetButton.addEventListener('click', function() {
-    const language = languageSelector.value;
-    editor.setValue(starterCode[language]);
-    const outputPanel = document.querySelector('.output-panel');
-    outputPanel.textContent = '> Code reset. Run your code to see output';
-});
+// const resetButton = document.querySelector('.reset');
+// resetButton.addEventListener('click', function() {
+//     const language = languageSelector.value;
+//     editor.setValue(starterCode[language]);
+//     const outputPanel = document.querySelector('.output-panel');
+//     outputPanel.textContent = '> Code reset. Run your code to see output';
+// });
 
 function executeCode() {
     $.ajax({
