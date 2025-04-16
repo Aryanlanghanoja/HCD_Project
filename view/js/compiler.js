@@ -148,17 +148,33 @@ resetButton.addEventListener('click', function() {
     outputPanel.textContent = '> Code reset. Run your code to see output';
 });
 
+// function executeCode() {
+//     $.ajax({
+//         url: "http://10.80.21.246/HCD_Project/services/compiler.php",
+//         method: "POST",
+//         data: {
+//             language: $("#language-selector").val(),
+//             code: editor.getValue()
+//         },
+//         success: function(response) {
+//             $("#output-panel").html(response.replace(/\n/g, "<br>"));
+//         }
+//     });
+// }
+
 function executeCode() {
+    const questionId = new URLSearchParams(window.location.search).get('question_id');
+    
     $.ajax({
         url: "http://10.80.21.246/HCD_Project/services/compiler.php",
         method: "POST",
         data: {
             language: $("#language-selector").val(),
-            code: editor.getValue()
+            code: editor.getValue(),
+            question_id: questionId
         },
         success: function(response) {
             $("#output-panel").html(response.replace(/\n/g, "<br>"));
         }
     });
 }
-
