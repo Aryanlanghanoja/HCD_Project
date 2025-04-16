@@ -156,6 +156,11 @@ main {
     color: #3a9953;
 }
 
+.problem-difficulty.easy {
+    background-color: #fff8e6;
+    color: #3a9953;;
+}
+
 .problem-difficulty.medium {
     background-color: #fff8e6;
     color: #e69711;
