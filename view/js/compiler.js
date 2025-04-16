@@ -1,32 +1,27 @@
 // Starter code templates
 const starterCode = {
-    js: `var containsDuplicate = function(nums) {
-// Write your solution here
-
-};`,
-    py: `class Solution:
-def containsDuplicate(self, nums: List[int]) -> bool:
-# Write your solution here
-pass`,
-    java: `class Solution {
-public boolean containsDuplicate(int[] nums) {
-// Write your solution here
-
-}
+    js: `console.log('Hello, World!')`,
+    py: `print('Hello, World!')`,
+    java: `public class Main {
+    public static void main(String[] args) {
+        // Write your solution here
+        System.out.println("Hello, World!");
+    }
 }`,
-    cpp: `class Solution {
-public:
-bool containsDuplicate(vector<int>& nums) {
-// Write your solution here
+    cpp: `#include <bits/stdc++.h>
+using namespace std;
 
-}
-};` ,
+int main() {
+    // Write your solution here
+    cout << "Hello, World!";
+    return 0;
+}` ,
 
     c: `#include <stdio.h>
 
 int main(){
     // Write your solution here
-    printf("Hello, world!");
+    printf("Hello, World!");
     return 0;
 }` ,
 
