@@ -181,7 +181,7 @@ if (isset($_POST['submit'])) {
             }
         }
         ?>
-        <form action="" method="post">
+        <form action="" method="post" >
             <div class="form">
                 <div class="fields">
                     <div class="input-field">
