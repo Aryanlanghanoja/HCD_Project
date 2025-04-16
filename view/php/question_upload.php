@@ -164,13 +164,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <div class="form-group">
-                        <label class="form-label" for="testcases">Problem Description</label>
+                        <label class="form-label" for="testcases">Testcases</label>
                         <textarea class="form-control" id="testcases" name="testcases" placeholder="Enter A Testcases Here" required></textarea>
                         <small id="testcases" style="display: none;"></small>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label" for="expected_outcome">Problem Description</label>
+                            <label class="form-label" for="expected_outcome">Expected Outputs</label>
                             <textarea class="form-control" id="expected_outcome" name="expected_outcome" placeholder="Enter A Outcome Here" required></textarea>
                             <small id="expected_outcome" style="display: none;"></small>
                         </div>
