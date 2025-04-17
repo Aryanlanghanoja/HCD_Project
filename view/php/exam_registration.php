@@ -148,18 +148,9 @@ if (isset($_POST['submit'])) {
                     <div class="card">
                         <h3 class="card-title">Exam Details</h3>
 
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <!-- <input type="text" id="subject" name="subject" placeholder="Enter subject name" required> -->
-                            <select id="subject" name="subject" required>
-                                <option value="" disabled selected>Subjects</option>
-                                <?php foreach ($subjects as $subject) { ?>
-                                <option value="<?php echo $subject['subject_id']; ?>"><?php echo $subject['subject_name']; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
 
-                        <div class="two-columns">
+
+                        <!-- <div class="two-columns"> -->
                             <div class="form-group">
                                 <label for="class">Class</label>
                                 <!-- <input type="text" id="class" name="class" placeholder="Enter class" required> -->
@@ -180,7 +171,7 @@ if (isset($_POST['submit'])) {
                                     <?php } ?>
                                 </select>
                             </div>
-                        </div>
+                        <!-- </div> -->
 
                         <div class="form-group">
                             <label for="batch">Batch</label>
@@ -216,6 +207,17 @@ if (isset($_POST['submit'])) {
                                 <?php } ?>
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <!-- <input type="text" id="subject" name="subject" placeholder="Enter subject name" required> -->
+                            <select id="subject" name="subject" required>
+                                <option value="" disabled selected>Subjects</option>
+                                <?php foreach ($subjects as $subject) { ?>
+                                <option value="<?php echo $subject['subject_id']; ?>"><?php echo $subject['subject_name']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="card">
@@ -225,7 +227,7 @@ if (isset($_POST['submit'])) {
                             <input type="date" id="examDate" name="examDate" required>
                         </div>
                         
-                        <div class="two-columns">
+                        <!-- <div class="two-columns"> -->
                             <div class="form-group">
                                 <label for="startTime">Start Time</label>
                                 <input type="time" id="startTime" name="startTime" required>
@@ -235,7 +237,7 @@ if (isset($_POST['submit'])) {
                                 <label for="duration">Duration (minutes)</label>
                                 <input type="number" id="duration" name="duration" placeholder="Duration" min="30" max="240" step="15" required>
                             </div>
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
 
@@ -243,9 +245,9 @@ if (isset($_POST['submit'])) {
             </form>
         </div>
 
-        <div class="form-footer">
-            &copy; <?php echo date("Y"); ?> Exam Registration Portal. All rights reserved.
-        </div>
+        <?php include 'footer.php'; ?>
+
+
     </div>
 </body>
 </html>

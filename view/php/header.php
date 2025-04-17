@@ -1,7 +1,8 @@
 <!-- header.php -->
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     :root {
-        --primary: #4361ee;
+        --primary: #02959F;
         --secondary: #3f37c9;
         --success: #4cc9f0;
         --danger: #f72585;
@@ -15,19 +16,16 @@
         --code-font: 'Consolas', 'Monaco', 'Courier New', monospace;
     }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: var(--code-font);
-    }
-
     header {
         background-color: white;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         position: sticky;
         top: 0;
         z-index: 100;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif !important;
     }
 
     .nav-container {
@@ -45,12 +43,12 @@
         color: var(--primary);
         text-decoration: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
     }
 
-    .logo span {
+    /* .logo span {
         color: var(--dark);
-    }
+    } */
 
     .logo-icon {
         margin-right: 10px;
@@ -98,15 +96,15 @@
 <header>
     <div class="nav-container">
         <a href="#" class="logo">
-            <span class="logo-icon">⚡</span>
-            Code<span>Arena</span>
+            <span class="logo-icon"><img src="../../assets/images/Logo_Black_Text-removebg_resized.png" alt="" srcset=""></span>
+            <!-- Code<span>Arena</span> -->
         </a>
         <ul class="nav-links">
             <li><a href="#" class="active">Problems</a></li>
             <li><a href="#">Exam</a></li>
             <li><a href="#">Discuss</a></li>
             <li><a href="#">Leaderboard</a></li>
-            <li><a href="#">Interview Preparation Resources</a></li>
+            <li><a href="#">Preparation Resources</a></li>
         </ul>
         <div class="user-actions">
             <div class="user-avatar">JS</div>
