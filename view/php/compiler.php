@@ -53,7 +53,7 @@ try {
     <link rel="stylesheet" href="../css/compiler.css">
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container nav-container">
             <a href="#" class="logo">
                 <span class="logo-icon">⚡</span>
@@ -70,7 +70,9 @@ try {
                 <div class="user-avatar">JS</div>
             </div>
         </div>
-    </header>
+    </header> -->
+
+    <?php include 'header.php'; ?>
 
     <div class="container">
         <main>
@@ -168,7 +170,9 @@ try {
                     </div>
                 </div>
             </div>
+
         </main>
+        <?php include 'footer.php';?>
     </div>
 
     <script src="../js/compiler.js"></script>
