@@ -1,0 +1,103 @@
+<!-- <!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tab Switch Restriction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stay on this Page!</h1>
+  <p>If you switch tabs or change focus, you'll get a warning.</p>
+
+  <script>
+    // Detect when user switches tabs or minimizes the window
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        alert("Tab switch detected! Please stay on the page.");
+      }
+    });
+
+    // Detect when user loses focus (e.g., Alt+Tab)
+    window.addEventListener("blur", function () {
+      alert("Focus lost! Please stay on the page.");
+    });
+  </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Exam</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+    #warning {
+      color: red;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exam in Progress</h1>
+  <p>Please do not switch tabs or minimize the window.</p>
+  <p id="warning">Warnings: 0</p>
+
+  <form id="exam-form">
+    <!-- Your exam content here -->
+    <p>Q1. What is 2 + 2?</p>
+    <input type="text" name="q1"><br><br>
+
+    <button type="submit">Submit Exam</button>
+  </form>
+
+  <script>
+    let warningCount = 0;
+    const maxWarnings = 3;
+    const warningDisplay = document.getElementById("warning");
+    const examForm = document.getElementById("exam-form");
+
+    function handleViolation(reason) {
+      warningCount++;
+      warningDisplay.textContent = `Warnings: ${warningCount} (${reason})`;
+
+      // Optional: Log to server
+      fetch('/log-violation', {
+        method: 'POST',
+        body: JSON.stringify({ reason, warningCount }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (warningCount >= maxWarnings) {
+        alert("You have been disqualified for switching tabs too many times.");
+        // Submit the form or redirect
+        examForm.submit(); // Or use location.href = '/disqualified';
+      } else {
+        alert(`Warning ${warningCount}/${maxWarnings}: Do not switch tabs!`);
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        handleViolation("Tab switch detected");
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      handleViolation("Window focus lost");
+    });
+  </script>
+</body>
+</html>
