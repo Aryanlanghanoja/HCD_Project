@@ -14,12 +14,12 @@
     }
 
     .nav-container {
-        max-width: 1200px;
+        max-width: 95%;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 20px;
+        padding: 0px 0px;
     }
 
     .logo {

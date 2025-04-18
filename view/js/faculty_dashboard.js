@@ -183,3 +183,23 @@ document.addEventListener("DOMContentLoaded", function () {
 		profileLink.style.display = "none"; // Close when clicking outside
 	});
 });
+
+function filterQuestions() {
+    const input = document.getElementById("searchBox").value.toLowerCase();
+    const rows = document.querySelectorAll(".questions-table tbody tr");
+
+    rows.forEach(row => {
+        const title = row.querySelector(".question-title").textContent.toLowerCase();
+        const difficulty = row.querySelector(".badge").textContent.toLowerCase();
+        const tags = Array.from(row.querySelectorAll(".tag")).map(tag => tag.textContent.toLowerCase()).join(" ");
+
+        // Match input against title, difficulty, or tags
+        const isVisible = title.includes(input) || difficulty.includes(input) || tags.includes(input);
+        row.style.display = isVisible ? "" : "none";
+    });
+}
+
+// Optional: trigger search on Enter key
+document.getElementById("searchBox").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") filterQuestions();
+});

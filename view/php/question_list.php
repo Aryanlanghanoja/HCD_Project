@@ -36,15 +36,15 @@ try {
                     <div class="panel-header">
                         <h1 class="panel-title">Coding Questions</h1>
                         <div class="panel-actions">
-                            <a href="#" class="btn btn-outline">My Submissions</a>
+                            <!-- <a href="#" class="btn btn-outline">My Submissions</a> -->
                             <a href="./question_upload.php" class="btn btn-primary">Upload Question</a>
                         </div>
                     </div>
 
                     <div class="search-filter-bar">
                         <div class="search-input">
-                            <input type="text" placeholder="Search questions...">
-                            <button>🔍</button>
+                            <input type="text" placeholder="Search questions..." id="searchBox" onchange="filterQuestions()">
+                            <button onclick="filterQuestions()">🔍</button>
                         </div>
                         <div class="filter-controls">
                             <select class="filter-select">
