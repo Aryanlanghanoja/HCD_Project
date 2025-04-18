@@ -75,7 +75,7 @@
 			<i class='bx bx-menu toggle-sidebar'></i>
 			<form action="#">
 				<div class="form-group">
-					<input type="text" placeholder="Search...">
+					<input type="text" placeholder="Search..." onchange="filterQuestions()" id="searchBox">
 					<i class='bx bx-search icon'></i>
 				</div>
 			</form>
