@@ -53,26 +53,8 @@ try {
     <link rel="stylesheet" href="../css/compiler.css">
 </head>
 <body>
-    <!-- <header>
-        <div class="container nav-container">
-            <a href="#" class="logo">
-                <span class="logo-icon">⚡</span>
-                Code<span>Arena</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#" class="active">Problems</a></li>
-                <li><a href="#">Exam</a></li>
-                <li><a href="#">Discuss</a></li>
-                <li><a href="#">Leaderboard</a></li>
-                <li><a href="#">Interview Preparation Resources</a></li>
-            </ul>
-            <div class="user-actions">
-                <div class="user-avatar">JS</div>
-            </div>
-        </div>
-    </header> -->
 
-    <?php include 'header.php'; ?>
+     <?php include '../../includes/header.php';?>
 
     <div class="container">
         <main>
@@ -172,7 +154,7 @@ try {
             </div>
 
         </main>
-        <?php include 'footer.php';?>
+        <?php include '../../includes/footer.php';?>
     </div>
 
     <script src="../js/compiler.js"></script>

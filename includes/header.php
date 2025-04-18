@@ -63,7 +63,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: #02959F;;
+        background-color: #02959F;
         display: flex;
         align-items: center;
         justify-content: center;
