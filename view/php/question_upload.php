@@ -109,14 +109,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Upload Coding Question</title>
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="nav-container">
             <a href="#" class="logo">
                 <span class="logo-icon">⚡</span>
                 Code<span>Arena</span>
             </a>
         </div>
-    </header>
+    </header> -->
+
+    <?php include "../../includes/header.php"?>
 
     <div class="container">
     <form id="questionForm" action="question_upload.php" method="POST" enctype="multipart/form-data">
@@ -265,6 +267,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
+
+    <?php include "../../includes/footer.php"?>
 
     <script src="../js/question_upload.js"></script>
 </body>

@@ -28,7 +28,7 @@ try {
 </head>
 <body>
 
-    <?php include 'header.php'; ?>
+    <?php include "../../includes/header.php" ?>
 
     <div class="page-wrapper">
         <div class="container">
@@ -126,6 +126,6 @@ try {
     </div>
     <script src="../js/question_list.js"></script>
 
-    <?php include 'footer.php';?>
+    <?php include "../../includes/footer.php" ?>
 </body>
 </html>
