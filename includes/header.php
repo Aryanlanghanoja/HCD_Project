@@ -1,21 +1,6 @@
 <!-- header.php -->
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    :root {
-        --primary: #02959F;
-        --secondary: #3f37c9;
-        --success: #4cc9f0;
-        --danger: #f72585;
-        --warning: #f8961e;
-        --info: #56cfe1;
-        --dark: #2b2d42;
-        --light: #f8f9fa;
-        --gray: #6c757d;
-        --gray-dark: #343a40;
-        --gray-light: #e9ecef;
-        --code-font: 'Consolas', 'Monaco', 'Courier New', monospace;
-    }
-
     header {
         background-color: white;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -40,15 +25,11 @@
     .logo {
         font-size: 24px;
         font-weight: 700;
-        color: var(--primary);
+        color: #02959F;;
         text-decoration: none;
         display: flex;
         align-items: flex-start;
     }
-
-    /* .logo span {
-        color: var(--dark);
-    } */
 
     .logo-icon {
         margin-right: 10px;
@@ -66,7 +47,7 @@
 
     .nav-links a {
         text-decoration: none;
-        color: var(--dark);
+        color: #2B2D42;
         font-weight: 500;
         transition: color 0.3s ease;
         letter-spacing: 0.2px;
@@ -74,7 +55,7 @@
 
     .nav-links a:hover,
     .nav-links a.active {
-        color: var(--primary);
+        color: #02959F;;
         font-weight: 600;
     }
 
@@ -82,7 +63,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: var(--primary);
+        background-color: #02959F;;
         display: flex;
         align-items: center;
         justify-content: center;
