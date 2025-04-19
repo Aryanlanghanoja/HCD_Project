@@ -39,7 +39,7 @@
 			
 			<li><a href="./question_list.php"><i class='bx bx-question-mark icon' ></i> Questions</a></li>
 			<!-- <li class="divider" data-text="table and forms">Table and forms</li> -->
-			<li><a href=""><i class='bx bx-table icon' ></i> Exam</a></li>
+			<li><a href="./exam_list.php"><i class='bx bx-table icon' ></i> Exam</a></li>
 			<!-- <li>
 				<a href="#"><i class='bx bxs-notepad icon' ></i> Forms <i class='bx bx-chevron-right icon-right' ></i></a>
 				<ul class="side-dropdown">

@@ -4,29 +4,21 @@ require_once '../../config/db.config.php';
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
-if (!isset($_SESSION["user"]) && $_SESSION["role"] != "admin") {
+if (!isset($_SESSION["user"]) && $_SESSION["role"] != "student") {
     // User not logged in
     header("Location: ./login.php");
     exit();
 }
 
 $subjects = [];
-$classes = [];
-$semesters = [];
-$batches = [];
 $locations = [];
 $invigilators = [];
+$class = $_SESSION['class_id'];
+$semester = $_SESSION['semester_id'];
+$batch =  $_SESSION['batch_id'];
 $exams = [];
 
 try {
-    $stmt = $conn->query("SELECT semester_id, semester_number FROM semesters");
-    $semesters = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt = $conn->query("SELECT class_id, class_name FROM classes");
-    $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt = $conn->query("SELECT batch_id, batch_name FROM batches");
-    $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $stmt = $conn->query("SELECT subject_id, subject_name FROM subjects");
     $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -37,7 +29,7 @@ try {
     $stmt = $conn->query("SELECT admin_id, name FROM admins");
     $invigilators = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $conn->query('SELECT 
+    $stmt = $conn->prepare('SELECT 
         exams.exam_id,
         subjects.subject_name,
         locations.location_name,
@@ -55,10 +47,23 @@ try {
         JOIN classes ON exams.class_id = classes.class_id
         JOIN semesters ON exams.semester_id = semesters.semester_id
         JOIN admins ON exams.invigilator_id = admins.admin_id
+        WHERE exams.class_id = :class
+        AND exams.semester_id = :semester
+        AND exams.batch_id = :batch
         ORDER BY exams.exam_id ASC'
     );
-    
+
+    // Bind the parameters correctly
+    $stmt->bindParam(':semester', $semester);
+    $stmt->bindParam(':class', $class);
+    $stmt->bindParam(':batch', $batch);
+
+    // Execute the query
+    $stmt->execute();
+
+    // Fetch the results
     $exams = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 } catch (PDOException $e) {
     echo "Database connection failed: " . $e->getMessage();
@@ -84,10 +89,6 @@ try {
                 <div class="panel">
                     <div class="panel-header">
                         <h1 class="panel-title">Exams</h1>
-                        <div class="panel-actions">
-                            <!-- <a href="#" class="btn btn-outline">My Submissions</a> -->
-                            <a href="./exam_registration.php" class="btn btn-primary">Create Exam</a>
-                        </div>
                     </div>
 
                     <div class="search-filter-bar">
@@ -106,30 +107,6 @@ try {
                             <option value="" disabled selected>Location</option>
                                 <?php foreach ($locations as $location) { ?>
                                     <option value="<?php echo $location['location_id']; ?>"><?php echo $location['location_name']; ?></option>
-                                <?php } ?>
-                            </select>
-                            <select class="filter-select">
-                            <option value="" disabled selected>Batch</option>
-                                <?php foreach ($batches as $batch) { ?>
-                                    <option value="<?php echo $batch['batch_id']; ?>"><?php echo $batch['batch_name']; ?></option>
-                                <?php } ?>
-                            </select>
-                            <select class="filter-select">
-                            <option value="" disabled selected>Class</option>
-                                <?php foreach ($classes as $class) { ?>
-                                    <option value="<?php echo $class['class_id']; ?>"><?php echo $class['class_name']; ?></option>
-                                <?php } ?>
-                            </select>
-                            <select class="filter-select">
-                            <option value="" disabled selected>Semester</option>
-                                <?php foreach ($semesters as $semester) { ?>
-                                    <option value="<?php echo $semester['semester_id']; ?>"><?php echo $semester['semester_number']; ?></option>
-                                <?php } ?>
-                            </select>
-                            <select class="filter-select">
-                            <option value="" disabled selected>Invigilator</option>
-                                <?php foreach ($invigilators as $invigilator) { ?>
-                                    <option value="<?php echo $invigilator['admin_id']; ?>"><?php echo $invigilator['name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
