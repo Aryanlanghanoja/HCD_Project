@@ -4,7 +4,7 @@ require_once '../../config/db.config.php';
 
 // Get user info from session
 $loggedInEnrollment = $_SESSION['user'] ?? null;
-$userRole = $_SESSION['user_role'] ?? 'student'; // e.g., set during login
+$userRole = $_SESSION['role'] ?? 'student'; // e.g., set during login
 $isAdmin = $userRole === 'admin';
 
 // Decide which enrollment number to fetch
