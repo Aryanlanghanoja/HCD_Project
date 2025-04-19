@@ -151,12 +151,12 @@ if (isset($_POST['submit'])) {
 
                         <div class="form-group">
                             <label for="duration">Exam Title</label>
-                            <input type="text" id="duration" name="duration" placeholder="Title of the Exam" required>
+                            <input type="text" id="duration" name="duration" placeholder="Title of the Exam">
                         </div>
 
                         <div class="form-group">
                                 <label for="duration">Concern Faculty</label>
-                                <select id="invigilator" name="invigilator" required>
+                                <select id="invigilator" name="invigilator">
                                 <option value="" disabled selected>Select Faculty</option>
                                 <?php foreach ($invigilators as $invigilator) { ?>
                                     <option value="<?php echo $invigilator['admin_id']; ?>"><?php echo $invigilator['name']; ?></option>
@@ -166,7 +166,7 @@ if (isset($_POST['submit'])) {
 
                             <div class="form-group">
                                 <label for="duration">Marks</label>
-                                <input type="number" id="duration" name="duration" placeholder="Duration" min="30" max="240" step="15" required>
+                                <input type="number" id="duration" name="duration" placeholder="Marks" min="30" max="240" step="15">
                             </div>
                     </div>
                     <!-- Student Selection -->

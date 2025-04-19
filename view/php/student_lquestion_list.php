@@ -4,7 +4,7 @@ require_once '../../config/db.config.php';
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user"]) && $_SESSION["role"] != "student") {
     // User not logged in
     header("Location: ./login.php");
     exit();
@@ -38,13 +38,7 @@ try {
                         <h1 class="panel-title">Coding Questions</h1>
                         <div class="panel-actions">
                             <!-- <a href="#" class="btn btn-outline">My Submissions</a> -->
-                            
-
-                            <?php
-                            if($_SESSION["role"] == "admin") { 
-                            ?>
-                                <a href="./question_upload.php" class="btn btn-primary">Upload Question</a>
-                                <?php } ?>
+                            <a href="./question_upload.php" class="btn btn-primary">Upload Question</a>
                         </div>
                     </div>
 
