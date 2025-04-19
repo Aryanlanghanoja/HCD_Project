@@ -100,7 +100,7 @@ try {
                                         <div class="actions">
                                             <!-- <button class="view" title="View Profile"><i class="fas fa-eye"></i></button> -->
                                             <!-- <button class="edit" title="Edit Details"><i class="fas fa-edit"></i></button> -->
-                                            <a href="./question_upload.php?question_id=<?= htmlspecialchars($q['question_id']) ?>"><button class="edit" title="Edit Profile"><i class="fas fa-edit" style="text-decoration: none; !important"></i></button></a>
+                                            <a href="./question_upload.php?question_id=<?= htmlspecialchars($q['question_id']) ?>"><button class="edit" title="Edit Profile"><i class="fas fa-edit"></i></button></a>
                                             <button class="delete" title="Delete Record"><i class="fas fa-trash-alt"></i></button>
                                         </div>
                                     </td>

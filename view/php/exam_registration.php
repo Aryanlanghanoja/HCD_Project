@@ -136,7 +136,7 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
     <div class="container">
-    <?php include 'header.php'; ?>
+    <?php include "../../includes/header.php" ?>
         <div class="form-header">
             <h1>Exam Registration</h1>
         </div>
@@ -144,9 +144,34 @@ if (isset($_POST['submit'])) {
         <div class="form-content">
             <form id="examRegistrationForm" method="POST" action="" enctype="multipart/form-data">
                 <div class="grid-layout">
+
                     <!-- Exam Details -->
                     <div class="card">
                         <h3 class="card-title">Exam Details</h3>
+
+                        <div class="form-group">
+                            <label for="duration">Exam Title</label>
+                            <input type="text" id="duration" name="duration" placeholder="Title of the Exam" required>
+                        </div>
+
+                        <div class="form-group">
+                                <label for="duration">Concern Faculty</label>
+                                <select id="invigilator" name="invigilator" required>
+                                <option value="" disabled selected>Select Faculty</option>
+                                <?php foreach ($invigilators as $invigilator) { ?>
+                                    <option value="<?php echo $invigilator['admin_id']; ?>"><?php echo $invigilator['name']; ?></option>
+                                <?php } ?>
+                            </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="duration">Marks</label>
+                                <input type="number" id="duration" name="duration" placeholder="Duration" min="30" max="240" step="15" required>
+                            </div>
+                    </div>
+                    <!-- Student Selection -->
+                    <div class="card">
+                        <h3 class="card-title">Student Selection</h3>
 
 
 
@@ -220,6 +245,7 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
 
+                    <!-- Schedule -->
                     <div class="card">
                         <h3 class="card-title">Schedule</h3>
                         <div class="form-group">
@@ -245,9 +271,7 @@ if (isset($_POST['submit'])) {
             </form>
         </div>
 
-        <?php include 'footer.php'; ?>
-
-
+        <?php include "../../includes/footer.php" ?>
     </div>
 </body>
 </html>
