@@ -33,12 +33,17 @@ foreach ($submissions as $sub) {
 
     $submissionData = json_decode($response, true);
 
+    // Format timestamp to local readable format
+    $timestampRaw = $submissionData['created_at'] ?? null;
+    $timestamp = $timestampRaw ? date("Y-m-d H:i:s", strtotime($timestampRaw)) : 'N/A';
+
     $results[] = [
         'question_title' => $question_title,
         'status'         => $submissionData['status']['description'] ?? 'N/A',
         'time'           => $submissionData['time'] ?? 'N/A',
         'memory'         => $submissionData['memory'] ?? 'N/A',
-        'stdout'         => $submissionData['stdout'] ?? ''
+        'stdout'         => $submissionData['stdout'] ?? '',
+        'created_at'     => $timestamp
     ];
 }
 ?>
@@ -57,6 +62,13 @@ foreach ($submissions as $sub) {
         .filters { margin-bottom: 10px; }
         .filters select { padding: 5px 10px; }
         .export-buttons { margin-top: 10px; }
+        
+        /* Colored status badges */
+        .status-accepted { background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; }
+        .status-failed { background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; }
+        .status-pending { background-color: #ffc107; color: black; padding: 5px 10px; border-radius: 5px; }
+        .status-error { background-color: #6c757d; color: white; padding: 5px 10px; border-radius: 5px; }
+        .status-partial { background-color: #17a2b8; color: white; padding: 5px 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -102,6 +114,7 @@ foreach ($submissions as $sub) {
             <th>Time (s)</th>
             <th>Memory (KB)</th>
             <th>Output</th>
+            <th>Date & Time</th>
         </tr>
     </thead>
     <tbody>
@@ -109,10 +122,37 @@ foreach ($submissions as $sub) {
             <tr>
                 <td><?= $index + 1 ?></td>
                 <td><?= htmlspecialchars($res['question_title']) ?></td>
-                <td><?= htmlspecialchars($res['status']) ?></td>
+                <td>
+                    <?php
+                    $status = htmlspecialchars($res['status']);
+                    $statusClass = '';
+                    switch ($status) {
+                        case 'Accepted':
+                            $statusClass = 'status-accepted';
+                            break;
+                        case 'Wrong Answer':
+                            $statusClass = 'status-failed';
+                            break;
+                        case 'Pending':
+                            $statusClass = 'status-pending';
+                            break;
+                        case 'Error':
+                            $statusClass = 'status-error';
+                            break;
+                        case 'Partial':
+                            $statusClass = 'status-partial';
+                            break;
+                        default:
+                            $statusClass = '';
+                            break;
+                    }
+                    ?>
+                    <span class="<?= $statusClass ?>"><?= $status ?></span>
+                </td>
                 <td><?= htmlspecialchars($res['time']) ?></td>
                 <td><?= htmlspecialchars($res['memory']) ?></td>
                 <td><pre><?= htmlspecialchars($res['stdout']) ?></pre></td>
+                <td><?= htmlspecialchars($res['created_at']) ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
