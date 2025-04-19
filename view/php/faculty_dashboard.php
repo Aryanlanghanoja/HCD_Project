@@ -34,7 +34,7 @@
 			
 			<li class="divider" data-text="main">Main</li>
 
-			<li><a href="../php/question_list.php"><i class='bx bx-code-alt icon'></i> Compiler</a></li>
+			<li><a href="../php/code_runner.php"><i class='bx bx-code-alt icon'></i> Compiler</a></li>
 
 			<li>
 				<a href="#"><i class='bx bx-question-mark icon'></i> Questions <i class='bx bx-chevron-right icon-right'></i></a>
@@ -61,7 +61,7 @@
 
 			<li><a href="#"><i class='bx bx-cog icon'></i> Settings</a></li>
 
-			<li><a href="#"><i class='bx bx-log-out icon'></i> Logout</a></li>
+			<li><a href="./logout.php"><i class='bx bx-log-out icon'></i> Logout</a></li>
 		</ul>
 	</section>
 <!-- SIDEBAR -->
