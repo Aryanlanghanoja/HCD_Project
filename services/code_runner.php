@@ -9,7 +9,7 @@ $code = $_POST['code'];
 $stdin = $_POST['input'] ?? "";
 
 // Judge0 API endpoint (use HTTP instead of HTTPS)
-$apiUrl = "http://10.80.21.246:2358/submissions?base64_encoded=true&wait=true";
+$apiUrl = "http://10.80.18.41:2358/submissions?base64_encoded=true&wait=true";
 
 // Mapping language to Judge0 language IDs
 $languageIds = [
@@ -58,7 +58,7 @@ if (!$token) {
 }
 
 // Polling for the result
-$statusUrl = "http://10.80.21.246:2358/submissions/$token?base64_encoded=true";
+$statusUrl = "http://10.80.18.41:2358/submissions/$token?base64_encoded=true";
 while (true) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $statusUrl);

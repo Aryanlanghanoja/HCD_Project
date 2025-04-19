@@ -37,7 +37,7 @@ try {
 }
 
 // Judge0 Setup
-$apiUrl = "http://10.80.21.246:2358/submissions?base64_encoded=true&wait=false";
+$apiUrl = "http://10.80.18.41:2358/submissions?base64_encoded=true&wait=false";
 $languageIds = [
     "c" => 50,
     "cpp" => 52,
@@ -97,7 +97,7 @@ try {
 }
 
 // Fetch submission result (polling)
-$statusUrl = "http://10.80.21.246:2358/submissions/$token?base64_encoded=true&wait=true";
+$statusUrl = "http://10.80.18.41:2358/submissions/$token?base64_encoded=true&wait=true";
 
 while (true) {
     $ch = curl_init();
