@@ -2,30 +2,31 @@
 session_start();
 require_once '../../config/db.config.php';
 
-// Check if the user is logged in
+// Get user info from session
 $loggedInEnrollment = $_SESSION['user'] ?? null;
-$userRole = $_SESSION['user_role'] ?? 'student'; // Set this during login
+$userRole = $_SESSION['user_role'] ?? 'student'; // e.g., set during login
+$isAdmin = $userRole === 'admin';
 
-if (!$loggedInEnrollment) {
-    die("User not logged in.");
+// Decide which enrollment number to fetch
+$selectedEnrollment = $loggedInEnrollment;
+
+// Admin can override by typing an enrollment number
+if ($isAdmin && isset($_GET['enrollment_no']) && !empty(trim($_GET['enrollment_no']))) {
+    $selectedEnrollment = trim($_GET['enrollment_no']);
 }
 
-// Check if admin is trying to view a specific student's data
-$is_admin = ($userRole === 'admin');
-$selected_enrollment = $loggedInEnrollment;
-
-if ($is_admin && isset($_GET['enrollment_no']) && !empty($_GET['enrollment_no'])) {
-    $selected_enrollment = $_GET['enrollment_no'];
+if (!$selectedEnrollment) {
+    die("Enrollment number not provided.");
 }
 
-// Fetch submission data with question title
+// Fetch submission data
 $stmt = $conn->prepare("
     SELECT s.submission_id, s.question_id, q.question_title
     FROM submissions s
     JOIN questions q ON s.question_id = q.question_id
     WHERE s.enrollment_no = ?
 ");
-$stmt->execute([$selected_enrollment]);
+$stmt->execute([$selectedEnrollment]);
 $submissions = $stmt->fetchAll();
 
 $judge0_url = "http://10.80.18.41:2358/submissions/";
@@ -35,7 +36,6 @@ foreach ($submissions as $sub) {
     $token = $sub['submission_id'];
     $question_title = $sub['question_title'];
 
-    // Request submission status from Judge0 with fields parameter
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $judge0_url . $token . "?fields=created_at,time,memory,stdout,status");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -43,27 +43,21 @@ foreach ($submissions as $sub) {
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // Decode the response from Judge0
     $submissionData = json_decode($response, true);
-
-    // Fetch the necessary details: status, time, memory, and created_at
     $status = $submissionData['status']['description'] ?? 'N/A';
     $time = $submissionData['time'] ?? 'N/A';
     $memory = $submissionData['memory'] ?? 'N/A';
     $stdout = $submissionData['stdout'] ?? '';
     $createdAt = $submissionData['created_at'] ?? null;
-
-    // Format the created_at timestamp
     $timestamp = $createdAt ? date("Y-m-d H:i:s", strtotime($createdAt)) : 'N/A';
 
-    // Store the results
     $results[] = [
         'question_title' => $question_title,
-        'status'         => $status,
-        'time'           => $time,
-        'memory'         => $memory,
-        'stdout'         => $stdout,
-        'created_at'     => $timestamp
+        'status' => $status,
+        'time' => $time,
+        'memory' => $memory,
+        'stdout' => $stdout,
+        'created_at' => $timestamp
     ];
 }
 ?>
@@ -72,7 +66,7 @@ foreach ($submissions as $sub) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Submissions</title>
+    <title>Submissions</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 30px; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
@@ -80,8 +74,7 @@ foreach ($submissions as $sub) {
         th { background-color: #f0f0f0; cursor: pointer; }
         pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
         .filters { margin-bottom: 10px; }
-        .filters select { padding: 5px 10px; }
-        .export-buttons { margin-top: 10px; }
+        .filters select, .filters input { padding: 5px 10px; }
         .status-accepted { background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; }
         .status-failed { background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; }
         .status-pending { background-color: #ffc107; color: black; padding: 5px 10px; border-radius: 5px; }
@@ -91,15 +84,19 @@ foreach ($submissions as $sub) {
 </head>
 <body>
 
-<h2>Your Submissions</h2>
+<h2><?= $isAdmin ? "Viewing Submissions for $selectedEnrollment" : "Your Submissions" ?></h2>
 
-<?php if ($is_admin): ?>
-    <form method="get">
-        <label for="enrollment_no">View Submissions for Enrollment No:</label>
-        <input type="text" name="enrollment_no" id="enrollment_no" value="<?= htmlspecialchars($selected_enrollment) ?>" required>
-        <button type="submit">Fetch</button>
+<?php if ($isAdmin): ?>
+    <form method="get" style="margin-bottom: 20px;">
+        <label>Enter Enrollment No:</label>
+        <input type="text" name="enrollment_no" placeholder="Enrollment No" value="<?= htmlspecialchars($selectedEnrollment) ?>" required>
+        <button type="submit">Fetch Submissions</button>
     </form>
 <?php endif; ?>
+
+<?php if (empty($results)): ?>
+    <p><strong>No submissions found.</strong></p>
+<?php else: ?>
 
 <div class="filters">
     <label for="questionFilter">Filter by Question:</label>
@@ -127,10 +124,6 @@ foreach ($submissions as $sub) {
     </select>
 </div>
 
-<div class="export-buttons">
-    <button onclick="exportTableToCSV()">Export to CSV</button>
-</div>
-
 <table id="submissionTable">
     <thead>
         <tr>
@@ -151,29 +144,16 @@ foreach ($submissions as $sub) {
                 <td>
                     <?php
                     $status = htmlspecialchars($res['status']);
-                    $statusClass = '';
-                    switch ($status) {
-                        case 'Accepted':
-                            $statusClass = 'status-accepted';
-                            break;
-                        case 'Wrong Answer':
-                            $statusClass = 'status-failed';
-                            break;
-                        case 'Pending':
-                            $statusClass = 'status-pending';
-                            break;
-                        case 'Error':
-                            $statusClass = 'status-error';
-                            break;
-                        case 'Partial':
-                            $statusClass = 'status-partial';
-                            break;
-                        default:
-                            $statusClass = '';
-                            break;
-                    }
+                    $class = match ($status) {
+                        'Accepted' => 'status-accepted',
+                        'Wrong Answer' => 'status-failed',
+                        'Pending' => 'status-pending',
+                        'Error' => 'status-error',
+                        'Partial' => 'status-partial',
+                        default => ''
+                    };
                     ?>
-                    <span class="<?= $statusClass ?>"><?= $status ?></span>
+                    <span class="<?= $class ?>"><?= $status ?></span>
                 </td>
                 <td><?= htmlspecialchars($res['time']) ?></td>
                 <td><?= htmlspecialchars($res['memory']) ?></td>
@@ -183,6 +163,8 @@ foreach ($submissions as $sub) {
         <?php endforeach; ?>
     </tbody>
 </table>
+
+<?php endif; ?>
 
 <script>
     const questionFilter = document.getElementById('questionFilter');
@@ -197,36 +179,12 @@ foreach ($submissions as $sub) {
         rows.forEach(row => {
             const qText = row.cells[1].textContent.toLowerCase();
             const sText = row.cells[2].textContent.toLowerCase();
-
-            row.style.display = (
-                (qVal === "" || qText === qVal) &&
-                (sVal === "" || sText === sVal)
-            ) ? "" : "none";
+            row.style.display = (qVal === "" || qText === qVal) && (sVal === "" || sText === sVal) ? "" : "none";
         });
     }
 
     questionFilter.addEventListener('change', filterTable);
     statusFilter.addEventListener('change', filterTable);
-
-    function exportTableToCSV() {
-        let csv = '';
-        const headers = Array.from(table.querySelectorAll('thead th')).map(th => `"${th.innerText}"`).join(',');
-        csv += headers + '\n';
-
-        rows.forEach(row => {
-            if (row.style.display === "none") return;
-            const cols = Array.from(row.cells).map(td => `"${td.innerText.replace(/\n/g, " ").trim()}"`);
-            csv += cols.join(',') + '\n';
-        });
-
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.setAttribute('href', URL.createObjectURL(blob));
-        link.setAttribute('download', 'submissions.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
 </script>
 
 </body>
