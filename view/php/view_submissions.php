@@ -1,25 +1,28 @@
 <?php
 session_start();
-require_once '../../config/db.config.php'; // This sets up $conn (PDO)
+require_once '../../config/db.config.php';
 
 $enrollment_no = $_SESSION['user'] ?? null;
-
 if (!$enrollment_no) {
     die("User not logged in.");
 }
 
-// Fetch submission tokens for the user
-$stmt = $conn->prepare("SELECT submission_id, question_id FROM submissions WHERE enrollment_no = ?");
+// Fetch submission data with question title
+$stmt = $conn->prepare("
+    SELECT s.submission_id, s.question_id, q.question_title
+    FROM submissions s
+    JOIN questions q ON s.question_id = q.question_id
+    WHERE s.enrollment_no = ?
+");
 $stmt->execute([$enrollment_no]);
 $submissions = $stmt->fetchAll();
 
-// Judge0 API endpoint
 $judge0_url = "http://10.80.18.41:2358/submissions/";
 $results = [];
 
 foreach ($submissions as $sub) {
     $token = $sub['submission_id'];
-    $question_id = $sub['question_id'];
+    $question_title = $sub['question_title'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $judge0_url . $token);
@@ -31,14 +34,11 @@ foreach ($submissions as $sub) {
     $submissionData = json_decode($response, true);
 
     $results[] = [
-        'question_id'     => $question_id,
-        'token'           => $token,
-        'status'          => $submissionData['status']['description'] ?? 'N/A',
-        'time'            => $submissionData['time'] ?? 'N/A',
-        'memory'          => $submissionData['memory'] ?? 'N/A',
-        'stdout'          => $submissionData['stdout'] ?? '',
-        'stderr'          => $submissionData['stderr'] ?? '',
-        'compile_output'  => $submissionData['compile_output'] ?? ''
+        'question_title' => $question_title,
+        'status'         => $submissionData['status']['description'] ?? 'N/A',
+        'time'           => $submissionData['time'] ?? 'N/A',
+        'memory'         => $submissionData['memory'] ?? 'N/A',
+        'stdout'         => $submissionData['stdout'] ?? ''
     ];
 }
 ?>
@@ -52,42 +52,116 @@ foreach ($submissions as $sub) {
         body { font-family: Arial, sans-serif; margin: 30px; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
         th, td { border: 1px solid #aaa; padding: 8px 12px; text-align: left; vertical-align: top; }
-        th { background-color: #f0f0f0; }
+        th { background-color: #f0f0f0; cursor: pointer; }
         pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
+        .filters { margin-bottom: 10px; }
+        .filters select { padding: 5px 10px; }
+        .export-buttons { margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <h2>Your Submissions</h2>
 
-<table>
+<div class="filters">
+    <label for="questionFilter">Filter by Question:</label>
+    <select id="questionFilter">
+        <option value="">All</option>
+        <?php
+        $questionTitles = array_unique(array_column($results, 'question_title'));
+        sort($questionTitles);
+        foreach ($questionTitles as $qt) {
+            echo "<option value=\"$qt\">$qt</option>";
+        }
+        ?>
+    </select>
+
+    <label for="statusFilter">Filter by Status:</label>
+    <select id="statusFilter">
+        <option value="">All</option>
+        <?php
+        $statuses = array_unique(array_column($results, 'status'));
+        sort($statuses);
+        foreach ($statuses as $status) {
+            echo "<option value=\"$status\">$status</option>";
+        }
+        ?>
+    </select>
+</div>
+
+<div class="export-buttons">
+    <button onclick="exportTableToCSV()">Export to CSV</button>
+</div>
+
+<table id="submissionTable">
     <thead>
         <tr>
-            <th>Question ID</th>
-            <th>Token</th>
+            <th>Sr. No.</th>
+            <th>Question Title</th>
             <th>Status</th>
             <th>Time (s)</th>
             <th>Memory (KB)</th>
             <th>Output</th>
-            <th>Error</th>
-            <th>Compile Output</th>
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($results as $res): ?>
+        <?php foreach ($results as $index => $res): ?>
             <tr>
-                <td><?= htmlspecialchars($res['question_id']) ?></td>
-                <td><?= htmlspecialchars($res['token']) ?></td>
+                <td><?= $index + 1 ?></td>
+                <td><?= htmlspecialchars($res['question_title']) ?></td>
                 <td><?= htmlspecialchars($res['status']) ?></td>
                 <td><?= htmlspecialchars($res['time']) ?></td>
                 <td><?= htmlspecialchars($res['memory']) ?></td>
                 <td><pre><?= htmlspecialchars($res['stdout']) ?></pre></td>
-                <td><pre><?= htmlspecialchars($res['stderr']) ?></pre></td>
-                <td><pre><?= htmlspecialchars($res['compile_output']) ?></pre></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+
+<script>
+    const questionFilter = document.getElementById('questionFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const table = document.getElementById('submissionTable');
+    const rows = table.querySelectorAll('tbody tr');
+
+    function filterTable() {
+        const qVal = questionFilter.value.toLowerCase();
+        const sVal = statusFilter.value.toLowerCase();
+
+        rows.forEach(row => {
+            const qText = row.cells[1].textContent.toLowerCase();
+            const sText = row.cells[2].textContent.toLowerCase();
+
+            row.style.display = (
+                (qVal === "" || qText === qVal) &&
+                (sVal === "" || sText === sVal)
+            ) ? "" : "none";
+        });
+    }
+
+    questionFilter.addEventListener('change', filterTable);
+    statusFilter.addEventListener('change', filterTable);
+
+    function exportTableToCSV() {
+        let csv = '';
+        const headers = Array.from(table.querySelectorAll('thead th')).map(th => `"${th.innerText}"`).join(',');
+        csv += headers + '\n';
+
+        rows.forEach(row => {
+            if (row.style.display === "none") return;
+            const cols = Array.from(row.cells).map(td => `"${td.innerText.replace(/\n/g, " ").trim()}"`);
+            csv += cols.join(',') + '\n';
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.setAttribute('href', URL.createObjectURL(blob));
+        link.setAttribute('download', 'submissions.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 
 </body>
 </html>
