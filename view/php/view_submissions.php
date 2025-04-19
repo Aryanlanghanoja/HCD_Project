@@ -174,17 +174,18 @@ foreach ($submissions as $sub) {
     const rows = table.querySelectorAll('tbody tr');
 
     function filterTable() {
-        const qVal = questionFilter.value.toLowerCase();
-        const sVal = statusFilter.value.toLowerCase();
+        const qVal = questionFilter.value.toLowerCase().trim();
+        const sVal = statusFilter.value.toLowerCase().trim();
 
         rows.forEach(row => {
-            const qText = row.cells[1].textContent.toLowerCase();
-            const sText = row.cells[2].textContent.toLowerCase();
+            const qText = row.cells[1].innerText.toLowerCase().trim();
+            const sText = row.cells[2].innerText.toLowerCase().trim();
 
-            row.style.display = (
+            const showRow =
                 (qVal === "" || qText === qVal) &&
-                (sVal === "" || sText === sVal)
-            ) ? "" : "none";
+                (sVal === "" || sText === sVal);
+
+            row.style.display = showRow ? "" : "none";
         });
     }
 
@@ -211,6 +212,7 @@ foreach ($submissions as $sub) {
         document.body.removeChild(link);
     }
 </script>
+
 
 </body>
 </html>
