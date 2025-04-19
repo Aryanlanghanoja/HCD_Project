@@ -4,7 +4,6 @@ require_once '../../config/db.config.php';
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
-require_once '../../config/db.config.php';
 
 $questions = null;
 $is_update = false;
@@ -16,8 +15,9 @@ if (isset($_GET['question_id'])) {
     $stmt->execute([$question_id]);
     $questions = $stmt->fetchAll();
     $question = $questions[0];
-
 }
+
+// echo $is_update;
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $example3_explanation = $_POST['example3Explanation'] ?? '';
             
 
-        if(isset($_GET['question_id']) && is_numeric($_GET['question_id'])) {
+        if(isset($_GET['question_id']) && is_numeric($_GET['question_id']) && $is_update == true) {
             $question_id= intval($_GET['question_id']);
 
             $sqlUpdate = "UPDATE questions SET 
@@ -89,9 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
 
             $conn->commit();
-            echo "✅ Question updated successfully";
+            echo "✅ Question Updated successfully";
         }
-        if (!$is_update) {
+        if ($is_update == false) {
             // INSERT new question
             $sqlInsert = "INSERT INTO questions (
                 question_title, description, difficulty, constraints, tags,
@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
 
             $conn->commit();
-            echo "✅ Question Updated successfully";
+            echo "✅ Question Uploaded successfully";
         }
 
         exit;
@@ -154,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include "../../includes/header.php"?>
 
     <div class="container">
-    <form id="questionForm" action="question_upload.php" method="POST" enctype="multipart/form-data">
+    <form id="questionForm" action="question_upload.php?question_id=<?php echo $question['question_id']; ?>" method="POST" enctype="multipart/form-data">
             <div class="form-container">
                 <!-- Left Column - Basic Info -->
                 <div class="form-panel">
