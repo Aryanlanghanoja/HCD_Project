@@ -106,52 +106,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const testcaseFile = document.getElementById('testcaseFile');
     const testcaseFileName = document.getElementById('testcaseFileName');
     
-    testcaseUpload.addEventListener('click', function() {
-        testcaseFile.click();
-    });
+    // testcaseUpload.addEventListener('click', function() {
+    //     testcaseFile.click();
+    // });
     
-    testcaseFile.addEventListener('change', function() {
-        if (this.files.length > 0) {
-            testcaseFileName.textContent = `Selected file: ${this.files[0].name}`;
-            testcaseFileName.style.display = 'block';
-        }
-    });
+    // testcaseFile.addEventListener('change', function() {
+    //     if (this.files.length > 0) {
+    //         testcaseFileName.textContent = `Selected file: ${this.files[0].name}`;
+    //         testcaseFileName.style.display = 'block';
+    //     }
+    // });
     
-    const outputUpload = document.getElementById('outputUpload');
-    const outputFile = document.getElementById('outputFile');
-    const outputFileName = document.getElementById('outputFileName');
+    // const outputUpload = document.getElementById('outputUpload');
+    // const outputFile = document.getElementById('outputFile');
+    // const outputFileName = document.getElementById('outputFileName');
     
-    outputUpload.addEventListener('click', function() {
-        outputFile.click();
-    });
+    // outputUpload.addEventListener('click', function() {
+    //     outputFile.click();
+    // });
     
-    outputFile.addEventListener('change', function() {
-        if (this.files.length > 0) {
-            outputFileName.textContent = `Selected file: ${this.files[0].name}`;
-            outputFileName.style.display = 'block';
-        }
-    });
+    // outputFile.addEventListener('change', function() {
+    //     if (this.files.length > 0) {
+    //         outputFileName.textContent = `Selected file: ${this.files[0].name}`;
+    //         outputFileName.style.display = 'block';
+    //     }
+    // });
     
     // Drag and drop for file uploads
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        testcaseUpload.addEventListener(eventName, preventDefaults, false);
-        outputUpload.addEventListener(eventName, preventDefaults, false);
-    });
+    // ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    //     testcaseUpload.addEventListener(eventName, preventDefaults, false);
+    //     outputUpload.addEventListener(eventName, preventDefaults, false);
+    // });
     
     function preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
     }
     
-    ['dragenter', 'dragover'].forEach(eventName => {
-        testcaseUpload.addEventListener(eventName, highlight, false);
-        outputUpload.addEventListener(eventName, highlight, false);
-    });
+    // ['dragenter', 'dragover'].forEach(eventName => {
+    //     testcaseUpload.addEventListener(eventName, highlight, false);
+    //     outputUpload.addEventListener(eventName, highlight, false);
+    // });
     
-    ['dragleave', 'drop'].forEach(eventName => {
-        testcaseUpload.addEventListener(eventName, unhighlight, false);
-        outputUpload.addEventListener(eventName, unhighlight, false);
-    });
+    // ['dragleave', 'drop'].forEach(eventName => {
+    //     testcaseUpload.addEventListener(eventName, unhighlight, false);
+    //     outputUpload.addEventListener(eventName, unhighlight, false);
+    // });
     
     function highlight(e) {
         this.style.borderColor = '#4361ee';
@@ -163,27 +163,27 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.backgroundColor = '';
     }
     
-    testcaseUpload.addEventListener('drop', function(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
+    // testcaseUpload.addEventListener('drop', function(e) {
+    //     const dt = e.dataTransfer;
+    //     const files = dt.files;
         
-        if (files.length > 0) {
-            testcaseFile.files = files;
-            testcaseFileName.textContent = `Selected file: ${files[0].name}`;
-            testcaseFileName.style.display = 'block';
-        }
-    });
+    //     if (files.length > 0) {
+    //         testcaseFile.files = files;
+    //         testcaseFileName.textContent = `Selected file: ${files[0].name}`;
+    //         testcaseFileName.style.display = 'block';
+    //     }
+    // });
     
-    outputUpload.addEventListener('drop', function(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
+    // outputUpload.addEventListener('drop', function(e) {
+    //     const dt = e.dataTransfer;
+    //     const files = dt.files;
         
-        if (files.length > 0) {
-            outputFile.files = files;
-            outputFileName.textContent = `Selected file: ${files[0].name}`;
-            outputFileName.style.display = 'block';
-        }
-    });
+    //     if (files.length > 0) {
+    //         outputFile.files = files;
+    //         outputFileName.textContent = `Selected file: ${files[0].name}`;
+    //         outputFileName.style.display = 'block';
+    //     }
+    // });
     
     // Form submission
     const questionForm = document.getElementById('questionForm');

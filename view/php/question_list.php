@@ -24,6 +24,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coding Questions List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/question_list.css">
 </head>
 <body>
@@ -77,6 +78,7 @@ try {
                                 <th style="width: 35%">Title</th>
                                 <th style="width: 15%">Difficulty</th>
                                 <th style="width: 25%">Tags</th>
+                                <th style="width: 25%">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,6 +95,14 @@ try {
                                         <?php foreach (explode(',', $q['tags']) as $tag): ?>
                                             <span class="tag"><?= htmlspecialchars(trim($tag)) ?></span>
                                         <?php endforeach; ?>
+                                    </td>
+                                    <td>
+                                        <div class="actions">
+                                            <!-- <button class="view" title="View Profile"><i class="fas fa-eye"></i></button> -->
+                                            <!-- <button class="edit" title="Edit Details"><i class="fas fa-edit"></i></button> -->
+                                            <a href="./question_upload.php?question_id=<?= htmlspecialchars($q['question_id']) ?>"><button class="edit" title="Edit Profile"><i class="fas fa-edit" style="text-decoration: none; !important"></i></button></a>
+                                            <button class="delete" title="Delete Record"><i class="fas fa-trash-alt"></i></button>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
