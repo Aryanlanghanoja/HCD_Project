@@ -173,13 +173,18 @@ foreach ($submissions as $sub) {
     const rows = table.querySelectorAll('tbody tr');
 
     function filterTable() {
-        const qVal = questionFilter.value.toLowerCase();
-        const sVal = statusFilter.value.toLowerCase();
+        const qVal = questionFilter.value.toLowerCase().trim();
+        const sVal = statusFilter.value.toLowerCase().trim();
 
         rows.forEach(row => {
-            const qText = row.cells[1].textContent.toLowerCase();
-            const sText = row.cells[2].textContent.toLowerCase();
-            row.style.display = (qVal === "" || qText === qVal) && (sVal === "" || sText === sVal) ? "" : "none";
+            const qText = row.cells[1].textContent.toLowerCase().trim();
+            const sSpan = row.cells[2].querySelector('span');
+            const sText = sSpan ? sSpan.textContent.toLowerCase().trim() : '';
+
+            const questionMatch = !qVal || qText === qVal;
+            const statusMatch = !sVal || sText === sVal;
+
+            row.style.display = (questionMatch && statusMatch) ? "" : "none";
         });
     }
 
