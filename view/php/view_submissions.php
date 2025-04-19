@@ -24,25 +24,34 @@ foreach ($submissions as $sub) {
     $token = $sub['submission_id'];
     $question_title = $sub['question_title'];
 
+    // Request submission status from Judge0 with fields parameter
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $judge0_url . $token);
+    curl_setopt($ch, CURLOPT_URL, $judge0_url . $token . "?fields=created_at,time,memory,stdout,status");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     $response = curl_exec($ch);
     curl_close($ch);
 
+    // Decode the response from Judge0
     $submissionData = json_decode($response, true);
 
-    // Format timestamp to local readable format
-    $timestampRaw = $submissionData['created_at'] ?? null;
-    $timestamp = $timestampRaw ? date("Y-m-d H:i:s", strtotime($timestampRaw)) : 'N/A';
+    // Fetch the necessary details: status, time, memory, and created_at
+    $status = $submissionData['status']['description'] ?? 'N/A';
+    $time = $submissionData['time'] ?? 'N/A';
+    $memory = $submissionData['memory'] ?? 'N/A';
+    $stdout = $submissionData['stdout'] ?? '';
+    $createdAt = $submissionData['created_at'] ?? null;
+    
+    // Format the created_at timestamp
+    $timestamp = $createdAt ? date("Y-m-d H:i:s", strtotime($createdAt)) : 'N/A';
 
+    // Store the results
     $results[] = [
         'question_title' => $question_title,
-        'status'         => $submissionData['status']['description'] ?? 'N/A',
-        'time'           => $submissionData['time'] ?? 'N/A',
-        'memory'         => $submissionData['memory'] ?? 'N/A',
-        'stdout'         => $submissionData['stdout'] ?? '',
+        'status'         => $status,
+        'time'           => $time,
+        'memory'         => $memory,
+        'stdout'         => $stdout,
         'created_at'     => $timestamp
     ];
 }
