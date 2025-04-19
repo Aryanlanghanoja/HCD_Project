@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.config.php'; // This sets up $conn (PDO)
+require_once '../../config/db.config.php'; // This sets up $conn (PDO)
 
 $enrollment_no = $_SESSION['user'] ?? null;
 
