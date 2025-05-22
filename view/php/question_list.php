@@ -84,7 +84,13 @@ try {
                                 <th style="width: 35%">Title</th>
                                 <th style="width: 15%">Difficulty</th>
                                 <th style="width: 25%">Tags</th>
+
+
+                                <?php
+                            if($_SESSION["role"] == "admin") { 
+                            ?>
                                 <th style="width: 25%">Actions</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,7 +108,11 @@ try {
                                             <span class="tag"><?= htmlspecialchars(trim($tag)) ?></span>
                                         <?php endforeach; ?>
                                     </td>
-                                    <td>
+
+                                    <?php
+                            if($_SESSION["role"] == "admin") { 
+                            ?>
+                                <td>
                                         <div class="actions">
                                             <!-- <button class="view" title="View Profile"><i class="fas fa-eye"></i></button> -->
                                             <!-- <button class="edit" title="Edit Details"><i class="fas fa-edit"></i></button> -->
@@ -110,6 +120,8 @@ try {
                                             <button class="delete" title="Delete Record"><i class="fas fa-trash-alt"></i></button>
                                         </div>
                                     </td>
+                                <?php } ?>
+                                    
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
