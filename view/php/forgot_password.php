@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $mail->isHTML(true);
                 $mail->Subject = 'Password Reset Request';
-                $reset_link = "http://localhost/hcd_project/reset_password.php?token=" . $token;
+                $reset_link = "http://10.80.2.206/hcd_project/reset_password.php?token=" . $token;
                 $mail->Body = "
                     <p>Click the link below to reset your password:</p>
                     <p><a href='$reset_link'>$reset_link</a></p>

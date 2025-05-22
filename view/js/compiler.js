@@ -145,7 +145,7 @@ resetButton.addEventListener('click', function() {
 
 // function executeCode() {
 //     $.ajax({
-//         url: "http://10.80.18.41/HCD_Project/services/compiler.php",
+//         url: "http://10.80.2.206/HCD_Project/services/compiler.php",
 //         method: "POST",
 //         data: {
 //             language: $("#language-selector").val(),
@@ -161,7 +161,7 @@ function executeCode() {
     const questionId = new URLSearchParams(window.location.search).get('question_id');
     
     $.ajax({
-        url: "http://10.80.18.41/HCD_Project/services/compiler.php",
+        url: "http://10.80.2.206/HCD_Project/services/compiler.php",
         method: "POST",
         data: {
             language: $("#language-selector").val(),

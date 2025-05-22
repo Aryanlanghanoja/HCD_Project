@@ -29,7 +29,7 @@ $stmt = $conn->prepare("
 $stmt->execute([$selectedEnrollment]);
 $submissions = $stmt->fetchAll();
 
-$judge0_url = "http://10.80.18.41:2358/submissions/";
+$judge0_url = "http://10.80.2.206:2358/submissions/";
 $results = [];
 
 foreach ($submissions as $sub) {

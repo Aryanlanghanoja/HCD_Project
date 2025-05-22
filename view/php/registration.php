@@ -135,7 +135,7 @@ if (isset($_POST['submit'])) {
                             $mail->isHTML(true);
                             $mail->Subject = "Verify Your Email";
                             $mail->Body = "<p>Click the link below to verify your email:</p>
-                                        <p><a href='http://localhost/hcd_project/verify_email.php?token=$verification_token'>Verify Email</a></p>";
+                                        <p><a href='http://10.80.2.206/hcd_project/verify_email.php?token=$verification_token'>Verify Email</a></p>";
 
                             $mail->send();
                             echo "A verification email has been sent to your email address. Please verify your email before logging in.";

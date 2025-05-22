@@ -145,7 +145,7 @@ function executeCode() {
     // console.log(inputs)
     // console.log(typeof(inputs))
     $.ajax({
-        url: "http://10.80.18.41/HCD_Project/services/code_runner.php",
+        url: "http://10.80.2.206/HCD_Project/services/code_runner.php",
         method: "POST",
         data: {
             language: $("#language-selector").val(),
