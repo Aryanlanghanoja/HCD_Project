@@ -1,4 +1,3 @@
-
 <?php
 require_once '../../config/db.config.php';
 require '../../vendor/autoload.php';
@@ -7,6 +6,8 @@ $dotenv->load();
 
 $questions = null;
 $is_update = false;
+$question = [];
+
 if (isset($_GET['question_id'])) {
     $question_id = $_GET['question_id'];
     $is_update = true;
@@ -14,11 +15,11 @@ if (isset($_GET['question_id'])) {
     $stmt = $conn->prepare("SELECT * FROM questions WHERE question_id = ?");
     $stmt->execute([$question_id]);
     $questions = $stmt->fetchAll();
-    $question = $questions[0];
+    if (!empty($questions)) {
+        $question = $questions[0];
+    }
 }
 
-// echo $is_update;
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $conn->beginTransaction();
@@ -43,10 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $example3_input = $_POST['example3Input'] ?? '';
         $example3_output = $_POST['example3Output'] ?? '';
         $example3_explanation = $_POST['example3Explanation'] ?? '';
-            
 
         if(isset($_GET['question_id']) && is_numeric($_GET['question_id']) && $is_update == true) {
-            $question_id= intval($_GET['question_id']);
+            $question_id = intval($_GET['question_id']);
 
             $sqlUpdate = "UPDATE questions SET 
                 question_title = :title,
@@ -89,10 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
 
             $conn->commit();
-            echo "✅ Question Updated successfully";
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'success', 'message' => 'Question Updated successfully']);
+            exit;
         }
+
         if ($is_update == false) {
-            // INSERT new question
             $sqlInsert = "INSERT INTO questions (
                 question_title, description, difficulty, constraints, tags,
                 testcase, expected_output,
@@ -124,22 +126,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ':ex2_exp' => $example2_explanation,
                 ':ex3_in' => $example3_input,
                 ':ex3_out' => $example3_output,
-                ':ex3_exp' => $example3_explanation,
+                ':ex3_exp' => $example3_explanation
             ]);
 
             $conn->commit();
-            echo "✅ Question Uploaded successfully";
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'success', 'message' => 'Question Uploaded successfully']);
+            exit;
         }
-
-        exit;
 
     } catch (PDOException $e) {
         $conn->rollBack();
-        echo "❌ Error: " . $e->getMessage();
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        exit;
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -150,13 +153,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Upload Coding Question</title>
 </head>
 <body>
-
     <?php include "../../includes/header.php"?>
 
     <div class="container">
-    <form id="questionForm" action="question_upload.php?question_id=<?php echo $question['question_id']; ?>" method="POST" enctype="multipart/form-data">
+        <form id="questionForm" method="POST" enctype="multipart/form-data">
             <div class="form-container">
-                <!-- Left Column - Basic Info -->
                 <div class="form-panel">
                     <div class="form-header">
                         <h1>Upload Coding Question</h1>
@@ -168,7 +169,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         
                         <div class="form-group">
                             <label class="form-label" for="title">Question Title</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="e.g., Two Sum, Palindrome Check" value="<?php echo $is_update ? htmlspecialchars($question['question_title']) : ''; ?>" required>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   placeholder="e.g., Two Sum, Palindrome Check" 
+                                   value="<?php echo $is_update ? htmlspecialchars($question['question_title']) : ''; ?>" 
+                                   required>
                         </div>
 
                         <div class="form-group">
@@ -178,41 +182,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="custom-difficulty-option medium selected" data-value="Medium">Medium</div>
                                 <div class="custom-difficulty-option hard" data-value="Hard">Hard</div>
                             </div>
-                            <input type="hidden" name="difficulty" id="difficultyInput" value="<?php echo $is_update ? htmlspecialchars($question['difficulty']) : 'Medium'; ?>">
+                            <input type="hidden" name="difficulty" id="difficultyInput" 
+                                   value="<?php echo $is_update ? htmlspecialchars($question['difficulty']) : 'Medium'; ?>">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="description">Problem Description</label>
-                            <textarea class="form-control" id="description" name="description" placeholder="Provide a clear description of the problem..." required><?php echo $is_update ? htmlspecialchars($question['description']) : ''; ?></textarea>
+                            <textarea class="form-control" id="description" name="description" 
+                                      placeholder="Provide a clear description of the problem..." 
+                                      required><?php echo $is_update ? htmlspecialchars($question['description']) : ''; ?></textarea>
                         </div>
 
-                        <div class="form-group tags-input">
+                        <div class="form-group">
                             <label class="form-label" for="tags">Tags</label>
-                            <input type="text" class="form-control" id="tagInput"  name="tags"  placeholder="Type tag and press Enter (e.g., Arrays, Dynamic Programming)" value="<?php echo $is_update ? htmlspecialchars($question['tags']) : ''; ?>">
-                            <div class="tags-container" id="tagsContainer"></div>
+                            <input type="text" class="form-control" id="tagInput" name="tags" 
+                                   placeholder="Type tags (e.g., Arrays, Dynamic Programming)" 
+                                   value="<?php echo $is_update ? htmlspecialchars($question['tags']) : ''; ?>">
                         </div>
 
-                        <div class="form-group tags-input">
-                            <label class="form-label" for="tags">Constraints</label>
-                            <input type="text" class="form-control" id="constraintInput"  name="constraints"  placeholder="Add Constraints Here" value="<?php echo $is_update ? htmlspecialchars($question['constraints']) : ''; ?>">
-                            <div class="tags-container" id="tagsContainer"></div>
+                        <div class="form-group">
+                            <label class="form-label" for="constraints">Constraints</label>
+                            <input type="text" class="form-control" id="constraintInput" name="constraints" 
+                                   placeholder="Add Constraints Here" 
+                                   value="<?php echo $is_update ? htmlspecialchars($question['constraints']) : ''; ?>">
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label" for="testcases">Testcases</label>
-                            <textarea class="form-control" id="testcases" name="testcases" placeholder="Enter A Testcases Here" required><?php echo $is_update ? htmlspecialchars($question['testcase']) : ''; ?></textarea>
-                            <small id="testcases" style="display: none;"></small>
+                            <textarea class="form-control" id="testcases" name="testcases" 
+                                      placeholder="Enter Testcases Here" 
+                                      required><?php echo $is_update ? htmlspecialchars($question['testcase']) : ''; ?></textarea>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label" for="expected_outcome">Expected Outputs</label>
-                            <textarea class="form-control" id="expected_outcome" name="expected_outcome" placeholder="Enter A Outcome Here"><?php echo $is_update ? htmlspecialchars($question['expected_output']) : ''; ?></textarea>
-                            <small id="expected_outcome" style="display: none;"></small>
+                            <textarea class="form-control" id="expected_outcome" name="expected_outcome" 
+                                      placeholder="Enter Expected Outputs Here"><?php echo $is_update ? htmlspecialchars($question['expected_output']) : ''; ?></textarea>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Right Column - Examples -->
                 <div class="form-panel">
                     <div class="form-header">
                         <h1>Example Test Cases</h1>
@@ -220,93 +229,100 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="scrollable-section">
-                        <div id="examplesContainer">
-                            <div class="example-container">
-                                <div class="example-header">
-                                    <span class="example-title">Example 1</span>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Input">Input</label>
-                                    <textarea class="form-control code-textarea" id="example1Input"  name="example1Input" placeholder="Input for example 1" required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Output">Output</label>
-                                    <textarea class="form-control code-textarea" id="example1Output" name="example1Output"  placeholder="Expected output for example 1" required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Explanation">Explanation</label>
-                                    <textarea class="form-control" id="example1Explanation" name="example1Explanation" placeholder="Explain how the output is derived from the input..."><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
+                        <!-- Example 1 -->
+                        <div class="example-container">
+                            <div class="example-header">
+                                <span class="example-title">Example 1</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example1Input">Input</label>
+                                <textarea class="form-control code-textarea" id="example1Input" name="example1Input" 
+                                          placeholder="Input for example 1" 
+                                          required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example1Output">Output</label>
+                                <textarea class="form-control code-textarea" id="example1Output" name="example1Output" 
+                                          placeholder="Expected output for example 1" 
+                                          required><?php echo $is_update ? htmlspecialchars($question['example_outcome_1']) : ''; ?></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example1Explanation">Explanation</label>
+                                <textarea class="form-control" id="example1Explanation" name="example1Explanation" 
+                                          placeholder="Explain how the output is derived from the input..."><?php echo $is_update ? htmlspecialchars($question['explanation_1']) : ''; ?></textarea>
                             </div>
                         </div>
 
-                        <div id="examplesContainer">
-                            <div class="example-container">
-                                <div class="example-header">
-                                    <span class="example-title">Example 2</span>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Input">Input</label>
-                                    <textarea class="form-control code-textarea" id="example1Input" name="example2Input" placeholder="Input for example 2" required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Output">Output</label>
-                                    <textarea class="form-control code-textarea" id="example1Output" name="example2Output" placeholder="Expected output for example 2" required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Explanation">Explanation</label>
-                                    <textarea class="form-control" id="example1Explanation" name="example2Explanation"  placeholder="Explain how the output is derived from the input..."><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
+                        <!-- Example 2 -->
+                        <div class="example-container">
+                            <div class="example-header">
+                                <span class="example-title">Example 2</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example2Input">Input</label>
+                                <textarea class="form-control code-textarea" id="example2Input" name="example2Input" 
+                                          placeholder="Input for example 2" 
+                                          required><?php echo $is_update ? htmlspecialchars($question['example_testcase_2']) : ''; ?></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example2Output">Output</label>
+                                <textarea class="form-control code-textarea" id="example2Output" name="example2Output" 
+                                          placeholder="Expected output for example 2" 
+                                          required><?php echo $is_update ? htmlspecialchars($question['example_outcome_2']) : ''; ?></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example2Explanation">Explanation</label>
+                                <textarea class="form-control" id="example2Explanation" name="example2Explanation" 
+                                          placeholder="Explain how the output is derived from the input..."><?php echo $is_update ? htmlspecialchars($question['explanation_2']) : ''; ?></textarea>
                             </div>
                         </div>
 
-                        <div id="examplesContainer">
-                            <div class="example-container">
-                                <div class="example-header">
-                                    <span class="example-title">Example 3</span>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Input">Input</label>
-                                    <textarea class="form-control code-textarea" id="example1Input" name="example3Input" placeholder="Input for example 3" required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Output">Output</label>
-                                    <textarea class="form-control code-textarea" id="example1Output" name="example3Output" placeholder="Expected output for example 3" required><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="example1Explanation">Explanation</label>
-                                    <textarea class="form-control" id="example1Explanation" name="example3Explanation" placeholder="Explain how the output is derived from the input..."><?php echo $is_update ? htmlspecialchars($question['example_testcase_1']) : ''; ?></textarea>
-                                </div>
+                        <!-- Example 3 -->
+                        <div class="example-container">
+                            <div class="example-header">
+                                <span class="example-title">Example 3</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example3Input">Input</label>
+                                <textarea class="form-control code-textarea" id="example3Input" name="example3Input" 
+                                          placeholder="Input for example 3" 
+                                          required><?php echo $is_update ? htmlspecialchars($question['example_testcase_3']) : ''; ?></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example3Output">Output</label>
+                                <textarea class="form-control code-textarea" id="example3Output" name="example3Output" 
+                                          placeholder="Expected output for example 3" 
+                                          required><?php echo $is_update ? htmlspecialchars($question['example_outcome_3']) : ''; ?></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="example3Explanation">Explanation</label>
+                                <textarea class="form-control" id="example3Explanation" name="example3Explanation" 
+                                          placeholder="Explain how the output is derived from the input..."><?php echo $is_update ? htmlspecialchars($question['explanation_3']) : ''; ?></textarea>
                             </div>
                         </div>
-                        
-                        <!-- <button type="button" class="add-example-btn" id="addExampleBtn">+ Add Another Example</button> -->
                         
                         <div class="form-actions">
                             <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
-                            <button type="submit" class="btn btn-primary" id="submitBtn"><?php echo $is_update ? "Update Question" : "Create Question"; ?></button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <?php echo $is_update ? "Update Question" : "Create Question"; ?>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-    </form>
-    <!-- Hidden fields -->
-   
-</form>
-
+        </form>
     </div>
 
     <?php include "../../includes/footer.php"?>
-
     <script src="../js/question_upload.js"></script>
 </body>
 </html>
