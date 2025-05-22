@@ -24,3 +24,5 @@
 /app/Config/database.php
 /vendors/*
 .env
+*.lock
+composer.lock
