@@ -130,15 +130,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
 
             $conn->commit();
-            header('Content-Type: application/json');
-            echo json_encode(['status' => 'success', 'message' => 'Question Uploaded successfully']);
+            // header('Content-Type: application/json');
+            // echo json_encode(['status' => 'success', 'message' => 'Question Uploaded successfully']);
+            echo "Question Upload Sucessfully";
             exit;
         }
 
     } catch (PDOException $e) {
         $conn->rollBack();
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        // header('Content-Type: application/json');
+        // echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        echo $e->getMessage();
         exit;
     }
 }
