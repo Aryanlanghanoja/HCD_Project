@@ -1,4 +1,13 @@
 <?php
+// Make session cookie last for 30 days
+session_set_cookie_params([
+    'lifetime' => 30 * 24 * 60 * 60, // 30 days
+    'path' => '/',
+    'secure' => isset($_SERVER['HTTPS']), // true if using HTTPS
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
+
 session_start();
 include '../../config/db.config.php';
 
