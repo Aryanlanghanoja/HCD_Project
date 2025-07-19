@@ -76,7 +76,6 @@ foreach ($submissions as $sub) {
     </style>
 </head>
 <body>
-
 <h2>Your Submissions for: <?= htmlspecialchars($results[0]['question_title'] ?? 'Unknown') ?></h2>
 
 <div class="export-buttons">
